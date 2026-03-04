@@ -187,8 +187,8 @@ router.get('/admin/stats', authenticateToken, authorizeRoles('Admin'), async (re
 });
 router.post('/', authenticateToken, authorizeRoles('Citizen'), async (req, res) => {
   try {
-    const { type, title, description, category, priority } = req.body;
-    console.log('Feedback submission request:', { type, title, description, category, priority });
+    const { type, title, description, category, priority, aiAnalysis } = req.body;
+    console.log('Feedback submission request:', { type, title, description, category, priority, hasAI: !!aiAnalysis });
 
     if (!type || !title || !description || !category) {
       return res.status(400).json({ error: 'Type, title, description, and category are required' });
@@ -218,6 +218,12 @@ router.post('/', authenticateToken, authorizeRoles('Citizen'), async (req, res) 
         category,
         priority: priority || 'MEDIUM',
         citizenId: req.user.id,
+        // Handle AI analysis if provided
+        ...(aiAnalysis && {
+          aiAnalysis: JSON.stringify(aiAnalysis),
+          isFlagged: aiAnalysis.isHarmful,
+          flaggedAt: aiAnalysis.isHarmful ? new Date() : null
+        })
       },
       include: {
         citizen: { select: { name: true, email: true } },

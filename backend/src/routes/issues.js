@@ -13,7 +13,7 @@ router.post('/issues-feedback', authenticateToken, authorizeRoles('Citizen'), as
       return res.status(401).json({ error: 'User not authenticated' });
     }
 
-    const { type, title, description, category, priority, workerId } = req.body;
+    const { type, title, description, category, priority, workerId, aiAnalysis } = req.body;
     console.log('Issues-Feedback submission:', { 
       userId: req.user.id, 
       type, 
@@ -21,7 +21,8 @@ router.post('/issues-feedback', authenticateToken, authorizeRoles('Citizen'), as
       descriptionLength: description?.length || 0,
       category, 
       priority, 
-      hasWorkerId: !!workerId 
+      hasWorkerId: !!workerId,
+      hasAI: !!aiAnalysis
     });
 
     // Validate required fields
@@ -95,12 +96,25 @@ router.post('/issues-feedback', authenticateToken, authorizeRoles('Citizen'), as
           category,
           priority: priority || 'MEDIUM',
           citizenId: req.user.id,
+          workerId: workerId ? parseInt(workerId) : null,
+          // Handle AI analysis if provided
+          ...(aiAnalysis && {
+            aiAnalysis: JSON.stringify(aiAnalysis),
+            isFlagged: aiAnalysis.isHarmful,
+            flaggedAt: aiAnalysis.isHarmful ? new Date() : null
+          })
         },
         include: {
           citizen: { select: { name: true, email: true } },
         },
       });
-      console.log('Feedback created:', feedback);
+      console.log('✅ Feedback created with AI analysis:', {
+        id: feedback.id,
+        hasAiAnalysis: !!feedback.aiAnalysis,
+        aiAnalysis: feedback.aiAnalysis,
+        isFlagged: feedback.isFlagged,
+        flaggedAt: feedback.flaggedAt
+      });
       return res.status(201).json(feedback);
     }
   } catch (error) {
@@ -258,6 +272,28 @@ router.get('/issues-feedback/admin', authenticateToken, authorizeRoles('Admin'),
       })
     ]);
 
+    console.log('🔍 Admin query results:', {
+      feedbackCount: feedbackResponse.length,
+      firstFeedback: feedbackResponse[0] ? {
+        id: feedbackResponse[0].id,
+        hasAiAnalysis: !!feedbackResponse[0].aiAnalysis,
+        aiAnalysis: feedbackResponse[0].aiAnalysis,
+        isFlagged: feedbackResponse[0].isFlagged
+      } : null
+    });
+
+    console.log('🔍 Admin query results (issues):', {
+      issuesCount: issuesResponse.length,
+      firstIssue: issuesResponse[0] ? {
+        id: issuesResponse[0].id,
+        type: issuesResponse[0].type,
+        title: issuesResponse[0].title,
+        description: issuesResponse[0].description,
+        category: issuesResponse[0].category,
+        priority: issuesResponse[0].priority,
+      } : null
+    });
+
     // Combine and add source tracking with replied field
     const combined = [
       ...feedbackResponse.map(item => ({ 
@@ -329,7 +365,7 @@ router.get('/issues-feedback/stats', authenticateToken, authorizeRoles('Admin'),
       issuesTotal, issuesPending, issuesInReview, issuesResolved, issuesRejected
     ] = issuesStats;
 
-    // Combine stats (map issue statuses to match feedback statuses)
+    // Calculate stats
     const total = feedbackTotal + issuesTotal;
     const open = feedbackOpen + issuesPending; // PENDING issues = OPEN
     const inProgress = feedbackInProgress + issuesInReview; // IN_REVIEW issues = IN_PROGRESS
