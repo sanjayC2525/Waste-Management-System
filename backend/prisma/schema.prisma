@@ -52,7 +52,7 @@ model GarbageReport {
   imagePath String
   latitude  Float
   longitude Float
-  status    String   @default("REPORTED") // REPORTED, APPROVED, ASSIGNED, IN_PROGRESS, COMPLETED, REJECTED
+  status    String   @default("REPORTED") // REPORTED, APPROVED, ASSIGNED, IN_PROGRESS, WORK_BEING_REASSIGNED, COMPLETED, REJECTED
   citizenId Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -102,8 +102,9 @@ model Worker {
   maxTasks       Int     @default(10)
 
   // Relations
-  user  User   @relation(fields: [userId], references: [id])
-  tasks Task[]
+  user     User      @relation(fields: [userId], references: [id])
+  tasks    Task[]
+  feedback Feedback[] @relation("FeedbackWorker")
 }
 
 model AILog {
@@ -123,15 +124,23 @@ model Feedback {
   status      String   @default("OPEN") // OPEN, IN_PROGRESS, RESOLVED, REJECTED
   citizenId   Int
   adminId     Int?     // Admin assigned to handle
+  workerId    Int?     // Related worker if applicable
   adminReply  String?  // Admin reply to citizen
   adminNotes  String?  // Admin internal notes
   replied     Boolean  @default(false) // Track if admin has replied
+  
+  // AI Analysis fields
+  aiAnalysis  String?  // JSON string of AI content analysis
+  isFlagged   Boolean  @default(false) // Flagged for review
+  flaggedAt   DateTime? // When content was flagged
+  
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   // Relations
   citizen User @relation("CitizenFeedback", fields: [citizenId], references: [id])
   admin   User? @relation("AdminFeedback", fields: [adminId], references: [id])
+  worker  Worker? @relation("FeedbackWorker", fields: [workerId], references: [id])
 }
 
 model Issue {
