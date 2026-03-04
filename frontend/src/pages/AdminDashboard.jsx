@@ -5,6 +5,7 @@ import { getStatusBadge, formatDate } from '../utils/statusHelpers.jsx';
 import ReportDetailModal from '../components/ReportDetailModal';
 import FeedbackManagement from '../components/FeedbackManagement';
 import Skeleton from '../components/Skeleton';
+import NotificationCenter from '../components/NotificationCenter';
 
 const AdminDashboard = () => {
   const [reports, setReports] = useState([]);
@@ -21,10 +22,21 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [modalLoading, setModalLoading] = useState(false);
+  const [userId, setUserId] = useState(null);
+  const [unableTasks, setUnableTasks] = useState([]);
+  const [stuckTasksLoading, setStuckTasksLoading] = useState(false);
+  const [reassignModal, setReassignModal] = useState({ isOpen: false, task: null, selectedWorker: '' });
 
   useEffect(() => {
     loadData();
+    getUserInfo();
   }, []);
+
+  useEffect(() => {
+    if (activeSection === 'stuckTasks') {
+      fetchUnableTasks();
+    }
+  }, [activeSection]);
 
   useEffect(() => {
     const handleEsc = (event) => {
@@ -37,6 +49,15 @@ const AdminDashboard = () => {
       window.removeEventListener('keydown', handleEsc);
     };
   }, []);
+
+  const getUserInfo = async () => {
+    try {
+      const response = await api.getUserProfile();
+      setUserId(response.data.id);
+    } catch (error) {
+      console.error('Failed to get user info:', error);
+    }
+  };
 
   const openReportModal = async (report) => {
     setModalLoading(true);
@@ -103,6 +124,42 @@ const AdminDashboard = () => {
     }
   };
 
+  const fetchUnableTasks = async () => {
+    try {
+      setStuckTasksLoading(true);
+      const response = await api.getUnableTasks();
+      setUnableTasks(response.data);
+    } catch (error) {
+      console.error('Failed to fetch unable tasks:', error);
+      toast.error('Failed to fetch stuck tasks');
+    } finally {
+      setStuckTasksLoading(false);
+    }
+  };
+
+  const handleReassignTask = async (taskId, workerId) => {
+    try {
+      console.log('Reassigning task:', taskId, 'to worker ID:', workerId);
+      console.log('Available workers:', workers.map(w => ({ id: w.id, name: w.name })));
+      
+      await api.reassignTask(taskId, workerId);
+      toast.success('Task reassigned successfully');
+      setReassignModal({ isOpen: false, task: null, selectedWorker: '' });
+      fetchUnableTasks(); // Refresh the stuck tasks list
+    } catch (error) {
+      console.error('Failed to reassign task:', error);
+      toast.error('Failed to reassign task');
+    }
+  };
+
+  const openReassignModal = (task) => {
+    setReassignModal({ isOpen: true, task, selectedWorker: '' });
+  };
+
+  const closeReassignModal = () => {
+    setReassignModal({ isOpen: false, task: null, selectedWorker: '' });
+  };
+
   const handleWorkerClick = (worker) => {
     // For now, just show a toast - this prevents blank page
     // In future, could navigate to worker detail page
@@ -141,6 +198,12 @@ const AdminDashboard = () => {
 
   return (
     <div className="p-6 space-y-6">
+      {/* Header with Notifications */}
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold text-primary">Admin Dashboard</h1>
+        {userId && <NotificationCenter userId={userId} />}
+      </div>
+
       <div className="flex space-x-4 mb-6">
         <button
           onClick={() => setActiveSection('addWorker')}
@@ -181,6 +244,16 @@ const AdminDashboard = () => {
           }`}
         >
           Feedback & Issues
+        </button>
+        <button
+          onClick={() => setActiveSection('stuckTasks')}
+          className={`px-4 py-2 rounded-lg transition-all duration-200 hover:shadow-md ${
+            activeSection === 'stuckTasks' 
+              ? 'bg-red-600 text-white shadow-md' 
+              : 'bg-surface hover:bg-surfaceLight text-text-primary'
+          }`}
+        >
+          Stuck Tasks
         </button>
       </div>
 
@@ -401,6 +474,70 @@ const AdminDashboard = () => {
         <FeedbackManagement />
       )}
 
+      {activeSection === 'stuckTasks' && (
+        <div className="bg-surface rounded-xl overflow-hidden shadow-soft hover:shadow-medium transition-shadow duration-200">
+          <div className="p-6 border-b border-border">
+            <h2 className="text-xl font-bold text-text-primary">Stuck Tasks</h2>
+            <p className="text-text-muted text-sm mt-1">Tasks that workers were unable to complete - needs reassignment</p>
+          </div>
+          
+          {stuckTasksLoading ? (
+            <div className="p-12 text-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+              <p className="text-text-muted">Loading stuck tasks...</p>
+            </div>
+          ) : unableTasks.length === 0 ? (
+            <div className="p-12 text-center">
+              <div className="text-4xl mb-4">✅</div>
+              <h3 className="text-lg font-semibold text-text-primary mb-2">No Stuck Tasks</h3>
+              <p className="text-text-muted">All tasks are proceeding normally</p>
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="bg-surfaceLight">
+                  <tr>
+                    <th className="p-4 text-left text-text-secondary font-medium">Task ID</th>
+                    <th className="p-4 text-left text-text-secondary font-medium">Citizen</th>
+                    <th className="p-4 text-left text-text-secondary font-medium">Original Worker</th>
+                    <th className="p-4 text-left text-text-secondary font-medium">Unable Reason</th>
+                    <th className="p-4 text-left text-text-secondary font-medium">Date</th>
+                    <th className="p-4 text-left text-text-secondary font-medium">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {unableTasks.map((task) => (
+                    <tr key={task.id} className="border-b border-border hover:bg-surfaceLight transition-colors">
+                      <td className="p-4 font-mono text-xs text-text-muted">#{task.id}</td>
+                      <td className="p-4 text-text-primary">{task.garbageReport?.citizen?.name}</td>
+                      <td className="p-4 text-text-primary">{task.worker?.user?.name}</td>
+                      <td className="p-4">
+                        <div className="max-w-xs">
+                          <p className="text-text-secondary text-sm truncate" title={task.unableReason}>
+                            {task.unableReason}
+                          </p>
+                        </div>
+                      </td>
+                      <td className="p-4 text-text-muted">
+                        {new Date(task.updatedAt).toLocaleDateString()}
+                      </td>
+                      <td className="p-4">
+                        <button
+                          onClick={() => openReassignModal(task)}
+                          className="bg-primary hover:bg-primary/90 text-white px-3 py-1 rounded-lg text-sm font-medium transition-all duration-200 hover:shadow-md"
+                        >
+                          Reassign
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      )}
+
       {selectedImage && (
         <div className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in" onClick={() => setSelectedImage(null)}>
           <div className="relative max-w-4xl max-h-[90vh] p-4">
@@ -428,6 +565,61 @@ const AdminDashboard = () => {
         workers={workers}
         onUpdateStatus={updateReportStatus}
       />
+
+      {/* Reassign Task Modal */}
+      {reassignModal.isOpen && reassignModal.task && (
+        <div className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in">
+          <div className="bg-surface rounded-xl p-6 w-full max-w-md shadow-large">
+            <h3 className="text-xl font-bold mb-4 text-text-primary">Reassign Task</h3>
+            <div className="mb-4">
+              <p className="text-text-secondary mb-2">
+                <strong>Task #{reassignModal.task.id}</strong> - {reassignModal.task.garbageReport?.citizen?.name}
+              </p>
+              <p className="text-sm text-text-muted">
+                Original worker: {reassignModal.task.worker?.user?.name}
+              </p>
+              <p className="text-sm text-status-error">
+                Reason: {reassignModal.task.unableReason}
+              </p>
+            </div>
+            
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-text-secondary mb-2">Select New Worker</label>
+              <select
+                value={reassignModal.selectedWorker}
+                onChange={(e) => setReassignModal(prev => ({ ...prev, selectedWorker: e.target.value }))}
+                className="w-full px-3 py-2 bg-background border border-border rounded-lg text-text-primary focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+                required
+              >
+                <option value="">Choose a worker...</option>
+                {workers
+                  .filter(w => w.id !== reassignModal.task.worker?.id)
+                  .map(worker => (
+                    <option key={worker.id} value={worker.id}>
+                      {worker.name} ({worker.email}) - Efficiency: {worker.efficiency}%
+                    </option>
+                  ))}
+              </select>
+            </div>
+            
+            <div className="flex justify-end space-x-3">
+              <button
+                onClick={closeReassignModal}
+                className="px-4 py-2 bg-surface hover:bg-surfaceLight text-text-primary font-medium rounded-lg transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => handleReassignTask(reassignModal.task.id, reassignModal.selectedWorker)}
+                disabled={!reassignModal.selectedWorker}
+                className="px-4 py-2 bg-primary hover:bg-primary/90 text-white font-medium rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Reassign Task
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

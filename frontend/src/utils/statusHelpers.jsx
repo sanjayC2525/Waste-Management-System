@@ -24,6 +24,12 @@ export const STATUS_CONFIG = {
     textColor: 'text-status-info',
     icon: '🔄'
   },
+  WORK_BEING_REASSIGNED: {
+    label: 'Work Being Re-Assigned',
+    color: 'bg-status-warning/10 text-status-warning border border-status-warning/20',
+    textColor: 'text-status-warning',
+    icon: '🔄'
+  },
   COMPLETED: {
     label: 'Completed',
     color: 'bg-status-success text-text-inverse',

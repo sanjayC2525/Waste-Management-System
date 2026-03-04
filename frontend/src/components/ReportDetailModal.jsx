@@ -19,21 +19,23 @@ const ReportDetailModal = ({
   const [adminNotes, setAdminNotes] = useState('');
   const [rejecting, setRejecting] = useState(false);
 
+  // Get the selected worker name for display (memoized to avoid repeated lookups)
+  const selectedWorkerName = selectedWorker ? workers.find(w => w.id === parseInt(selectedWorker))?.name || 'Worker' : '';
+
   const handleApprove = async () => {
-    if (!selectedWorker) {
-      toast.error('Please select a worker to assign this request');
+    if (!reportId || !selectedWorker) {
+      toast.error('Please select a worker first');
       return;
     }
 
-    if (!reportId) {
-      toast.error('Report data is invalid');
-      return;
-    }
+    // Debug logging to identify the issue
+    console.log('Selected worker ID:', selectedWorker);
+    console.log('Available workers:', workers.map(w => ({ id: w.id, name: w.name })));
+    console.log('Matched worker name:', selectedWorkerName);
 
     try {
       await onUpdateStatus(reportId, 'approve', selectedWorker);
-      const workerName = workers.find(w => w.id === parseInt(selectedWorker))?.name || 'Worker';
-      toast.success(`Request approved and assigned to ${workerName}`);
+      toast.success(`Request approved and assigned to ${selectedWorkerName}`);
       onClose();
     } catch (error) {
       toast.error('Failed to approve request');
@@ -262,7 +264,7 @@ const ReportDetailModal = ({
                       className="flex-1"
                       disabled={loading}
                     >
-                      {loading ? 'Processing...' : selectedWorker ? `✅ Assign to ${workers.find(w => w.id === parseInt(selectedWorker))?.name || 'Worker'}` : 'Select Worker First'}
+                      {loading ? 'Processing...' : selectedWorker ? `✅ Assign to ${selectedWorkerName}` : 'Select Worker First'}
                     </Button>
                   </div>
                 </div>

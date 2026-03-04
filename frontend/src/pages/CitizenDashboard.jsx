@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { api } from '../utils/api';
 import toast from 'react-hot-toast';
+import { getStatusBadge, formatDate } from '../utils/statusHelpers.jsx';
 import FeedbackForm from '../components/FeedbackForm';
 
 const CitizenDashboard = () => {
@@ -217,7 +218,9 @@ const CitizenDashboard = () => {
         description: formData.description.trim(),
         category: formData.category,
         priority: formData.priority,
-        workerId: formData.workerId || undefined
+        workerId: formData.workerId || undefined,
+        // Include AI analysis if present
+        ...(formData.aiAnalysis && { aiAnalysis: formData.aiAnalysis })
       };
       
       console.log('Submitting to unified endpoint:', payload);
@@ -240,15 +243,6 @@ const CitizenDashboard = () => {
       console.error('Submit error:', error);
       const errorMessage = error.response?.data?.error || error.response?.data?.message || error.message || 'Failed to submit. Please try again.';
       toast.error(`Submission failed: ${errorMessage}`);
-    }
-  };
-
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'REPORTED': return 'text-yellow-500';
-      case 'APPROVED': return 'text-green-500';
-      case 'REJECTED': return 'text-red-500';
-      default: return 'text-gray-500';
     }
   };
 
@@ -410,10 +404,10 @@ const CitizenDashboard = () => {
                             </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <span className={`font-medium ${getStatusColor(report.status)}`}>{report.status}</span>
+                            {getStatusBadge(report.status)}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            {new Date(report.createdAt).toLocaleDateString()}
+                            {formatDate(report.createdAt)}
                           </td>
                         </tr>
                       ))}
@@ -475,7 +469,7 @@ const CitizenDashboard = () => {
                           }`}>
                             {item.status}
                           </span>
-                          <p className="text-xs text-text-muted mt-1">{new Date(item.createdAt).toLocaleDateString()}</p>
+                          <p className="text-xs text-text-muted mt-1">{formatDate(item.createdAt)}</p>
                         </div>
                       </div>
                       <p className="text-text-secondary mb-2">{item.description}</p>

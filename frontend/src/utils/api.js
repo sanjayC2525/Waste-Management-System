@@ -38,6 +38,8 @@ export const api = {
   // Tasks
   getTasks: () => axios.get(`${API_BASE_URL}/tasks`),
   markTaskCollected: (id, action, unableReason) => axios.put(`${API_BASE_URL}/tasks/${id}/collect`, { action, unableReason }),
+  getUnableTasks: () => axios.get(`${API_BASE_URL}/tasks/unable`),
+  reassignTask: (id, workerId) => axios.put(`${API_BASE_URL}/tasks/${id}/reassign`, { workerId }),
 
   // Workload Management
   getWorkerStats: () => axios.get(`${API_BASE_URL}/workload/stats`),

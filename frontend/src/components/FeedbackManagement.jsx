@@ -313,6 +313,9 @@ const FeedbackManagement = () => {
                   Worker
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">
+                  AI Analysis
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">
                   Created
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">
@@ -323,13 +326,13 @@ const FeedbackManagement = () => {
             <tbody className="bg-surface divide-y divide-border">
               {loading ? (
                 <tr>
-                  <td colSpan="10" className="px-6 py-4 text-center text-text-muted">
+                  <td colSpan="11" className="px-6 py-4 text-center text-text-muted">
                     Loading issues and feedback...
                   </td>
                 </tr>
               ) : issuesAndFeedback.length === 0 ? (
                 <tr>
-                  <td colSpan="10" className="px-6 py-4 text-center text-text-muted">
+                  <td colSpan="11" className="px-6 py-4 text-center text-text-muted">
                     No issues or feedback found
                   </td>
                 </tr>
@@ -369,7 +372,38 @@ const FeedbackManagement = () => {
                       {getStatusBadge(item.status)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-text-primary">
-                      {item.worker?.name || '-'}
+                      {item.source === 'feedback' ? 
+                        (item.workerId ? `Worker #${item.workerId}` : '-') : 
+                        (item.worker?.name || '-')
+                      }
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-text-primary">
+                      {item.aiAnalysis ? (
+                        (() => {
+                          const analysis = typeof item.aiAnalysis === 'string' 
+                            ? JSON.parse(item.aiAnalysis) 
+                            : item.aiAnalysis;
+                          return (
+                            <div className="flex items-center space-x-2">
+                              <span className={`px-2 py-1 text-xs rounded-full ${
+                                analysis.severity === 'severe' ? 'bg-red-100 text-red-800' :
+                                analysis.severity === 'moderate' ? 'bg-orange-100 text-orange-800' :
+                                'bg-yellow-100 text-yellow-800'
+                              }`}>
+                                {analysis.severity}
+                              </span>
+                              <div className="text-xs text-text-muted">
+                                {analysis.categories?.join(', ')}
+                                {analysis.confidence && (
+                                  <span className="ml-1">({Math.round(analysis.confidence * 100)}%)</span>
+                                )}
+                              </div>
+                            </div>
+                          );
+                        })()
+                      ) : (
+                        <span className="text-text-muted text-xs">No analysis</span>
+                      )}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-text-primary">
                       {new Date(item.createdAt).toLocaleDateString()}
