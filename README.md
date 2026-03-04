@@ -1,106 +1,187 @@
-# 🗑️ Garbage Management System
+# Garbage Management System
 
-A prototype web application for managing garbage collection requests with role-based workflow and status tracking.
+A comprehensive web application for managing garbage collection services with role-based workflow, real-time status tracking, and AI-powered content moderation.
 
-## Project Status
+## Overview
 
-**Status: Prototype / In Development**  
-**Not Production-Ready**
-
-This is a functional prototype demonstrating core garbage management workflows. The system contains bugs, incomplete features, and requires significant development before production use.
+This system provides complete garbage management workflow automation with three user roles: Citizens submit service requests, Workers handle assigned tasks, and Administrators oversee operations. The platform includes AI content moderation for user submissions, comprehensive analytics, and mobile-responsive design.
 
 ## Features
 
-### ✅ Working Features
+### Core System
 - User authentication with JWT tokens and role-based access control
-- Citizens can submit garbage reports with photos and GPS location
+- Citizens submit garbage reports with photos and GPS location
 - Admin dashboard for reviewing and managing reports
-- Worker task assignment and basic workflow management
-- Feedback and issue submission system with single-reply constraint
+- Worker task assignment and workflow management
+- Real-time status tracking across all user roles
 - File upload functionality for report photos and proof of work
-- Basic analytics and reporting for admin users
 - Mobile-responsive web interface
 
-### 🟡 Partially Working / Buggy Features
-- Admin dashboard: Some views show blank data or fail to load
-- Feedback system: Admin replies may not reflect immediately in UI
-- Worker statistics: Performance metrics do not update in real-time
-- Status synchronization: Pending states may not refresh across sessions
-- Real-time notifications: Implemented with polling, not WebSocket
-- Location services: Basic GPS integration without route optimization
+### AI Content Moderation
+- Real-time analysis of user submissions for harmful content
+- Three-tier severity classification (mild, moderate, severe)
+- Visual warnings with color-coded alerts
+- Automatic blocking of severe content
+- Admin dashboard displays AI analysis insights
+- Comprehensive word detection including profanity and threats
 
-### ❌ Not Implemented
-- WebSocket real-time updates
-- Advanced analytics and AI-powered assignment
-- Route optimization for workers
-- Mobile native applications
-- Email notifications system
-- Multi-tenant support
-- Advanced reporting and export features
+### Analytics & Management
+- Comprehensive analytics and reporting for admin users
+- Worker performance metrics and workload management
+- System statistics and audit trails
+- Feedback and issue submission system
+- Notification system for status updates
 
-## 👥 Role-wise Features
+## User Roles & Features
 
-### 👤 Citizen Features
-- Submit garbage reports with photos and location
-- View report history and status updates
+### Citizens
+- Submit garbage reports with photos and location data
+- Track report status through complete lifecycle
 - Submit feedback and issues to administrators
-- Receive notifications about report status changes
+- Receive notifications about status changes
+- View personal report history
 
-### 👷 Worker Features
+### Workers
 - View assigned tasks and work orders
 - Update task status (accept, in-progress, complete)
 - Upload before/after photos as proof of work
-- View basic performance metrics
+- View performance metrics and workload
+- Request task reassignment when needed
 
-### 👑 Admin Features
+### Administrators
 - Review and approve/reject citizen reports
-- Assign workers to reports and tasks
+- Assign workers to reports and manage tasks
 - Monitor system analytics and statistics
 - Manage user accounts and permissions
 - Handle citizen feedback and issues
-- View audit logs and system activity
+- View AI-moderated content analysis
+- Access audit logs and system activity
 
-## 🔒 Security & Privacy
+## AI Content Moderation System
 
-### Known Security Risks
-- Demo credentials: Hardcoded passwords in development seed file
-- User data logging: Console logs may contain emails, IDs, and request data
-- Development CORS: Open localhost configuration only
-- Token storage: Uses localStorage without secure HttpOnly cookies
-- Uploads directory: User-generated files stored locally
-- Authentication: Basic JWT implementation without refresh tokens
+### Detection Categories
+- **Threats**: Kill, harm, murder, death, destroy
+- **Profanity**: Comprehensive vulgar word detection
+- **Harassment**: Hate speech, personal attacks
+- **Violence**: Physical harm descriptions
 
-### Privacy Considerations
-- User data logged in development mode
-- File uploads stored without encryption
-- No data anonymization or retention policies
-- Basic audit logging without privacy controls
+### Severity Levels
+- **Mild**: Single mild profanity words (yellow warning)
+- **Moderate**: Strong profanity or harassment (orange warning)
+- **Severe**: Threats and violence (red warning + submission blocked)
 
-### ⚠️ Known Issues
+### Admin Features
+- AI analysis display in feedback management
+- Content flagging for review
+- Confidence scores and category detection
+- Audit trail of moderated content
 
-### 🐛 Current Bugs
-- Admin dashboard displays blank views in some sections
-- Feedback replies do not immediately reflect in the interface
-- Worker statistics fail to update in real-time
-- Pending report states do not refresh across browser sessions
-- Status synchronization issues between different user roles
-- Mobile responsive layout breaks on some screen sizes
-- File upload validation is incomplete
+## Project Structure
 
-### 📏 Limitations
-- SQLite database not suitable for production scale
-- No automated tests or error handling
-- Limited concurrent user support
-- Basic error messages without user guidance
-- No backup or recovery mechanisms
+```
+garbage-management-system/
+├── backend/
+│   ├── src/
+│   │   ├── routes/
+│   │   │   ├── auth.js              # Authentication endpoints
+│   │   │   ├── garbageReports.js    # Garbage report management
+│   │   │   ├── tasks.js             # Task assignment and workflow
+│   │   │   ├── feedback.js          # Feedback submission with AI
+│   │   │   ├── issues.js            # Issues and unified feedback
+│   │   │   ├── workload.js          # Worker performance metrics
+│   │   │   └── notifications.js     # System notifications
+│   │   ├── services/
+│   │   │   └── notificationService.js # Notification management
+│   │   ├── middleware/
+│   │   │   └── auth.js              # JWT authentication middleware
+│   │   └── server.js                # Express server setup
+│   ├── prisma/
+│   │   ├── schema.prisma            # Database schema definition
+│   │   ├── migrations/              # Database migration files
+│   │   └── dev.db                   # SQLite development database
+│   ├── uploads/                     # User uploaded files
+│   ├── .env                         # Environment variables
+│   └── package.json
+├── frontend/
+│   ├── public/
+│   │   └── index.html
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── FeedbackForm.jsx      # Feedback submission with AI
+│   │   │   ├── FeedbackManagement.jsx # Admin feedback management
+│   │   │   ├── ContentWarning.jsx    # AI warning display component
+│   │   │   ├── ReportDetailModal.jsx # Report detail view
+│   │   │   └── ...                   # Other UI components
+│   │   ├── pages/
+│   │   │   ├── CitizenDashboard.jsx  # Citizen main interface
+│   │   │   ├── WorkerDashboard.jsx   # Worker task management
+│   │   │   ├── AdminDashboard.jsx    # Admin management interface
+│   │   │   └── Login.jsx             # Authentication page
+│   │   ├── services/
+│   │   │   ├── aiContentModeration.js # AI analysis service
+│   │   │   └── api.js                # API client configuration
+│   │   ├── utils/
+│   │   │   ├── statusHelpers.jsx     # Status badge utilities
+│   │   │   └── ...                   # Helper functions
+│   │   ├── styles/
+│   │   │   └── globals.css           # Global CSS styles
+│   │   ├── App.jsx                   # Main application component
+│   │   └── main.jsx                 # Application entry point
+│   ├── package.json
+│   └── vite.config.js
+├── .gitignore
+├── README.md
+└── package.json                     # Root package configuration
+```
 
-## 🛠️ Setup (Development Only)
+## Technical Architecture
+
+### Backend
+- Node.js with Express.js framework
+- Prisma ORM with SQLite database
+- JWT authentication with bcrypt
+- Multer for file uploads
+- AI content analysis engine
+
+### Frontend
+- React with Vite build tool
+- TailwindCSS for responsive styling
+- Axios for HTTP requests
+- React Hot Toast for notifications
+- Real-time content analysis
+
+### Database Schema
+- Users: Authentication and role management
+- GarbageReports: Citizen reports with status tracking
+- Tasks: Worker assignments with workflow states
+- Feedback: Citizen feedback with AI analysis
+- Issues: Disputes and service issues
+- Workers: Worker profiles and performance data
+- Notifications: System notifications
+- AuditLogs: Activity tracking
+
+## Workflow States
+
+### Garbage Reports
+- REPORTED → APPROVED → ASSIGNED → IN_PROGRESS → COMPLETED
+- WORK_BEING_REASSIGNED (when worker unable to complete)
+
+### Tasks
+- ASSIGNED → ACCEPTED → IN_PROGRESS → COMPLETED/UNABLE
+
+### Feedback
+- OPEN → IN_PROGRESS → RESOLVED/REJECTED
+
+### Issues
+- PENDING → IN_REVIEW → RESOLVED/REJECTED
+
+## Installation
 
 ### Prerequisites
 - Node.js 18+
 - npm or yarn
 
-### Installation
+### Setup Instructions
 
 ```bash
 # Clone repository
@@ -115,7 +196,7 @@ cd ../frontend && npm install
 # Setup environment
 cd backend
 cp .env.example .env
-# Edit .env with your configuration (see .env.example for variables)
+# Edit .env with your configuration
 
 # Setup database
 npx prisma migrate dev
@@ -135,83 +216,66 @@ npm run dev
 - Workers: worker1@example.com, worker2@example.com, worker3@example.com
 - Citizen: citizen@example.com
 
-Note: Check your .env file for actual demo passwords.
+## API Endpoints
 
-## Repository Safety Notes
+### Authentication
+- POST /auth/login - User login
+- POST /auth/register - User registration
 
-### Files That Must NOT Be Committed
-- `.env` files (contain secrets and credentials)
-- `backend/uploads/` directory (user-generated files)
-- `backend/prisma/dev.db` (development database)
-- Any files with secrets, tokens, or private keys
+### Garbage Reports
+- GET /garbage-reports - Get user reports
+- POST /garbage-reports - Submit new report
+- PUT /garbage-reports/:id/approve - Approve report
 
-### Security Practices
-- Never commit credentials or API keys
-- Use environment variables for all configuration
-- Exclude user-generated content from version control
-- Review all code changes for sensitive data exposure
+### Tasks
+- GET /tasks - Get assigned tasks
+- PUT /tasks/:id/accept - Accept task
+- PUT /tasks/:id/complete - Complete task
 
-## 🔧 Tech Stack
+### Feedback
+- GET /feedback - Get feedback submissions
+- POST /feedback - Submit feedback with AI analysis
+- GET /feedback/stats - Get feedback statistics
 
-### ⚙️ Backend
-- Node.js with Express.js
-- Prisma ORM with SQLite database
-- JWT authentication with bcrypt
-- Multer for file uploads
+### Issues
+- GET /issues/issues-feedback/admin - Get all issues and feedback
+- POST /issues/issues-feedback - Submit issue or feedback
 
-### 🎨 Frontend
-- React with Vite build tool
-- TailwindCSS for styling
-- Axios for HTTP requests
-- React Hot Toast for notifications
+## Security Considerations
 
-### 🛠️ Development Tools
-- npm for package management
-- Prisma Migrate for database changes
-- Concurrently for running multiple processes
+### Current Implementation
+- JWT token-based authentication
+- Role-based access control
+- File upload validation
+- Input sanitization
+- CORS configuration
 
-## 🗄️ Database Schema
+### Development Notes
+- Uses localStorage for tokens (development only)
+- Console logging in development mode
+- SQLite database for development
+- Environment variable configuration
 
-- Users: Authentication and role management
-- GarbageReports: Citizen reports with status tracking
-- Tasks: Worker assignments with workflow states
-- Feedback: Citizen feedback with admin replies
-- Issues: Disputes and service issues
-- Notifications: System notifications
-- AuditLogs: Activity tracking
-- Workers: Worker profiles and performance data
+## Contributing
 
-## 🤝 Contributing
-
-### 📝 Development Guidelines
+### Development Guidelines
 - Follow existing code style and patterns
 - Add error handling for new features
 - Test all role-based functionality
 - Update documentation for API changes
 
-### 🎯 Areas for Contribution
-- Automated testing implementation
+### Areas for Enhancement
 - WebSocket real-time updates
 - Advanced analytics features
 - Mobile optimization
 - Security hardening
 - Performance optimization
+- Production database migration
 
-## 🏗️ Architecture Notes
+## License
 
-### 🔄 Workflow States
-- Reports: REPORTED → APPROVED → ASSIGNED → IN_PROGRESS → COMPLETED
-- Tasks: ASSIGNED → ACCEPTED → IN_PROGRESS → COMPLETED/UNABLE
-- Feedback: OPEN → IN_PROGRESS → RESOLVED/REJECTED
-- Issues: PENDING → IN_REVIEW → RESOLVED/REJECTED
-
-### 📋 Current Limitations
-- Single-organization deployment only
-- Limited scalability with SQLite
-- No multi-language support
-- Basic error handling and logging
-- Development-focused configuration
+This project is for demonstration and educational purposes.
 
 ---
 
-❤️ Built with React, Node.js, and Prisma for demonstration purposes.
+Built with React, Node.js, Prisma, and AI content moderation technology.
