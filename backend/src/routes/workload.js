@@ -51,7 +51,7 @@ router.get('/stats', authenticateToken, authorizeRoles('Admin'), async (req, res
       const efficiency = worker.worker ? await calculateWorkerEfficiency(worker.worker.id) : 0;
 
       return {
-        id: worker.id,
+        id: worker.worker?.id || worker.id, // Use Worker table ID if available, fallback to User ID
         name: worker.name,
         email: worker.email,
         profileImage: worker.profileImage,

@@ -174,23 +174,37 @@ router.put('/:id', authenticateToken, authorizeRoles('Admin'), async (req, res) 
         // If workerId is provided during approval, also assign the worker
         if (workerId) {
           const parsedWorkerId = parseInt(workerId);
+          console.log('Received workerId:', workerId, 'parsed:', parsedWorkerId);
+          
           if (isNaN(parsedWorkerId)) {
             return res.status(400).json({ error: 'Invalid Worker ID' });
           }
 
-          // Find the worker profile
-          const workerUser = await prisma.user.findUnique({ where: { id: parsedWorkerId } });
-          if (!workerUser || workerUser.role !== 'Worker') {
-            return res.status(404).json({ error: 'Worker not found' });
-          }
+          // First try to find by Worker table ID (new approach)
+          let worker = await prisma.worker.findUnique({ where: { id: parsedWorkerId } });
+          let workerUser;
+          
+          if (worker) {
+            console.log('Found worker by Worker ID:', worker.id);
+            workerUser = await prisma.user.findUnique({ where: { id: worker.userId } });
+          } else {
+            console.log('Worker not found by Worker ID, trying User ID approach...');
+            // Fallback to old approach: find by User table ID
+            workerUser = await prisma.user.findUnique({ where: { id: parsedWorkerId } });
+            if (!workerUser || workerUser.role !== 'Worker') {
+              return res.status(404).json({ error: 'Worker not found' });
+            }
 
-          // Get or create the Worker record
-          let worker = await prisma.worker.findUnique({ where: { userId: workerUser.id } });
-          if (!worker) {
-            worker = await prisma.worker.create({
-              data: { userId: workerUser.id }
-            });
+            // Get or create the Worker record
+            worker = await prisma.worker.findUnique({ where: { userId: workerUser.id } });
+            if (!worker) {
+              worker = await prisma.worker.create({
+                data: { userId: workerUser.id }
+              });
+            }
           }
+          
+          console.log('Final worker:', worker.id, 'workerUser:', workerUser.name);
 
           // Update to assigned status and create task
           newStatus = 'ASSIGNED';
@@ -199,18 +213,27 @@ router.put('/:id', authenticateToken, authorizeRoles('Admin'), async (req, res) 
           updateData.assignedWorkerId = parsedWorkerId;
           updateData.statusHistory = addStatusHistory(currentReport.statusHistory, newStatus, note);
 
+          console.log('Creating task for worker:', worker.id, 'workerUser:', workerUser.name);
+          console.log('Report data:', currentReport.id);
+
           // Create task
-          await prisma.task.create({
-            data: {
-              garbageReportId: currentReport.id,
-              workerId: worker.id,
-              latitude: currentReport.latitude,
-              longitude: currentReport.longitude,
-              scheduledTime: new Date(Date.now() + 24 * 60 * 60 * 1000), // Schedule for tomorrow
-              status: 'ASSIGNED',
-              statusHistory: addStatusHistory(null, 'ASSIGNED', `Task created for ${workerUser.name}`)
-            },
-          });
+          try {
+            const createdTask = await prisma.task.create({
+              data: {
+                garbageReportId: currentReport.id,
+                workerId: worker.id,
+                latitude: currentReport.latitude,
+                longitude: currentReport.longitude,
+                scheduledTime: new Date(Date.now() + 24 * 60 * 60 * 1000), // Schedule for tomorrow
+                status: 'ASSIGNED',
+                statusHistory: addStatusHistory(null, 'ASSIGNED', `Task created for ${workerUser.name}`)
+              },
+            });
+            console.log('Task created successfully:', createdTask.id);
+          } catch (taskError) {
+            console.error('Failed to create task:', taskError);
+            throw taskError;
+          }
         }
         break;
 
