@@ -1,4 +1,4 @@
-# Garbage Management System
+# Waste Management System
 
 A comprehensive web application for managing garbage collection services with role-based workflow, real-time status tracking, and AI-powered content moderation.
 
