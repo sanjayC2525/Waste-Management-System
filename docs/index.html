@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garbage Collection Management System - Documentation</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar no-print">
+            <h1>GCMS Documentation</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="active">Table of Contents</a></li>
+                    <li><a href="introduction.html">1. Introduction</a></li>
+                    <li><a href="system-analysis.html">2. System Analysis</a></li>
+                    <li><a href="system-design.html">3. System Design</a></li>
+                    <li><a href="database-design.html">4. Database Design</a></li>
+                    <li><a href="implementation.html">5. Implementation</a></li>
+                    <li><a href="testing.html">6. Testing</a></li>
+                    <li><a href="conclusion.html">7. Conclusion</a></li>
+                </ul>
+            </nav>
+        </div>
+        
+        <div class="content">
+            <h1>Garbage Collection Management System</h1>
+            <h2>Complete Technical Documentation</h2>
+            
+            <div class="top-nav no-print">
+                <a href="introduction.html">Next: Introduction →</a>
+            </div>
+            
+            <div class="toc">
+                <h3>Table of Contents</h3>
+                <ul>
+                    <li><a href="introduction.html">1. Project Introduction</a>
+                        <ul class="toc-level-2">
+                            <li><a href="introduction.html#11-introduction">1.1 Introduction</a></li>
+                            <li><a href="introduction.html#12-problem-statement">1.2 Problem Statement</a></li>
+                            <li><a href="introduction.html#13-objectives">1.3 Objectives</a></li>
+                            <li><a href="introduction.html#14-scope-of-the-system">1.4 Scope of the System</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="system-analysis.html">2. System Analysis</a>
+                        <ul class="toc-level-2">
+                            <li><a href="system-analysis.html#21-existing-system">2.1 Existing System</a></li>
+                            <li><a href="system-analysis.html#22-proposed-system">2.2 Proposed System</a></li>
+                            <li><a href="system-analysis.html#23-system-actors">2.3 System Actors</a></li>
+                            <li><a href="system-analysis.html#24-system-modules">2.4 System Modules</a></li>
+                            <li><a href="system-analysis.html#25-workflow-of-garbage-collection-process">2.5 Workflow of Garbage Collection Process</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="system-design.html">3. System Design</a>
+                        <ul class="toc-level-2">
+                            <li><a href="system-design.html#31-system-architecture">3.1 System Architecture</a></li>
+                            <li><a href="system-design.html#32-technology-stack">3.2 Technology Stack</a></li>
+                            <li><a href="system-design.html#33-software-requirements-specification">3.3 Software Requirements Specification</a></li>
+                            <li><a href="system-design.html#34-functional-requirements">3.4 Functional Requirements</a></li>
+                            <li><a href="system-design.html#35-non-functional-requirements">3.5 Non-Functional Requirements</a></li>
+                            <li><a href="system-design.html#36-use-case-diagram-explanation">3.6 Use Case Diagram Explanation</a></li>
+                            <li><a href="system-design.html#37-data-flow-diagram-explanation">3.7 Data Flow Diagram Explanation</a></li>
+                            <li><a href="system-design.html#38-security-architecture">3.8 Security Architecture</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="database-design.html">4. Database Design</a>
+                        <ul class="toc-level-2">
+                            <li><a href="database-design.html#41-database-architecture">4.1 Database Architecture</a></li>
+                            <li><a href="database-design.html#42-entity-relationship-diagram-explanation">4.2 Entity Relationship Diagram Explanation</a></li>
+                            <li><a href="database-design.html#43-table-structures">4.3 Table Structures</a></li>
+                            <li><a href="database-design.html#44-notification-system-design">4.4 Notification System Design</a></li>
+                            <li><a href="database-design.html#45-audit-logging-system">4.5 Audit Logging System</a></li>
+                            <li><a href="database-design.html#46-analytics-system">4.6 Analytics System</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="implementation.html">5. Implementation</a>
+                        <ul class="toc-level-2">
+                            <li><a href="implementation.html#51-user-interface-design">5.1 User Interface Design</a></li>
+                            <li><a href="implementation.html#52-screens-and-dashboard-explanation">5.2 Screens and Dashboard Explanation</a></li>
+                            <li><a href="implementation.html#53-ai-content-moderation">5.3 AI Content Moderation</a></li>
+                            <li><a href="implementation.html#54-worker-performance-tracking">5.4 Worker Performance Tracking</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="testing.html">6. Testing</a>
+                        <ul class="toc-level-2">
+                            <li><a href="testing.html#61-testing-strategy">6.1 Testing Strategy</a></li>
+                            <li><a href="testing.html#62-test-coverage">6.2 Test Coverage</a></li>
+                            <li><a href="testing.html#63-testing-tools-and-frameworks">6.3 Testing Tools and Frameworks</a></li>
+                            <li><a href="testing.html#64-test-results">6.4 Test Results</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="conclusion.html">7. Conclusion</a>
+                        <ul class="toc-level-2">
+                            <li><a href="conclusion.html#71-project-summary">7.1 Project Summary</a></li>
+                            <li><a href="conclusion.html#72-future-scope">7.2 Future Scope</a></li>
+                            <li><a href="conclusion.html#73-references">7.3 References</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="highlight-section">
+                <h3>🚀 Project Overview</h3>
+                <p>The Garbage Collection Management System (GCMS) is a comprehensive web-based platform that digitizes and automates municipal waste collection operations. This smart governance system leverages modern web technologies to create an efficient, transparent, and accountable waste management ecosystem.</p>
+            </div>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>🎯 Modern Technology Stack</h4>
+                    <p>Built with React.js, Node.js, Express.js, and SQLite with Prisma ORM, featuring JWT authentication and AI-powered content moderation.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>👥 Multi-Role System</h4>
+                    <p>Supports three distinct user roles: Citizens (service requesters), Workers (field personnel), and Administrators (system managers).</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🤖 AI Integration</h4>
+                    <p>Advanced content moderation using TensorFlow models for real-time analysis of user submissions with severity classification.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📊 Analytics & Reporting</h4>
+                    <p>Comprehensive analytics dashboard with performance metrics, worker productivity tracking, and system activity monitoring.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🔒 Security & Audit</h4>
+                    <p>Enterprise-grade security with JWT authentication, role-based access control, and comprehensive audit logging.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📱 Responsive Design</h4>
+                    <p>Mobile-first responsive design ensuring accessibility across all devices with TailwindCSS styling.</p>
+                </div>
+            </div>
+            
+            <h2>Document Information</h2>
+            <ul>
+                <li><strong>Document Version:</strong> 1.0</li>
+                <li><strong>Last Updated:</strong> March 2026</li>
+                <li><strong>Technology Stack:</strong> React.js + Node.js + Express.js + SQLite + Prisma ORM</li>
+                <li><strong>Project Category:</strong> Smart City / E-Governance Platform</li>
+                <li><strong>System Type:</strong> Full-Stack Web Application with AI Integration</li>
+            </ul>
+            
+            <div class="page-break"></div>
+            
+            <h2>Quick Navigation</h2>
+            <p>This documentation is organized into the following main sections:</p>
+            
+            <ol>
+                <li><strong>Introduction:</strong> Project overview, problem statement, objectives, and scope</li>
+                <li><strong>System Analysis:</strong> Existing vs. proposed system, actors, modules, and workflows</li>
+                <li><strong>System Design:</strong> Architecture, technology stack, requirements, and security</li>
+                <li><strong>Database Design:</strong> Entity relationships, table structures, and specialized systems</li>
+                <li><strong>Implementation:</strong> User interface, dashboards, AI features, and performance tracking</li>
+                <li><strong>Testing:</strong> Testing strategy, coverage, tools, and results</li>
+                <li><strong>Conclusion:</strong> Project summary, future scope, and references</li>
+            </ol>
+            
+            <div class="top-nav no-print">
+                <a href="introduction.html">Begin with Introduction →</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

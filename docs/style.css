@@ -1,0 +1,360 @@
+/* Professional Documentation Style */
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db;
+    --accent-color: #e74c3c;
+    --text-color: #333;
+    --light-gray: #f8f9fa;
+    --border-color: #dee2e6;
+    --code-bg: #f4f4f4;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Georgia', serif;
+    font-size: 12pt;
+    line-height: 1.6;
+    color: var(--text-color);
+    background: white;
+}
+
+/* Print Styles */
+@media print {
+    body {
+        font-size: 11pt;
+        line-height: 1.4;
+    }
+    
+    .no-print {
+        display: none !important;
+    }
+    
+    .page-break {
+        page-break-before: always;
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+        page-break-after: avoid;
+    }
+    
+    pre, blockquote {
+        page-break-inside: avoid;
+    }
+    
+    .sidebar {
+        display: none !important;
+    }
+    
+    .content {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+}
+
+/* Layout */
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 280px;
+    background: var(--primary-color);
+    color: white;
+    padding: 2rem 1rem;
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.sidebar h1 {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    border-bottom: 2px solid var(--secondary-color);
+    padding-bottom: 1rem;
+}
+
+.sidebar nav ul {
+    list-style: none;
+}
+
+.sidebar nav li {
+    margin-bottom: 0.5rem;
+}
+
+.sidebar nav a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.sidebar nav a:hover,
+.sidebar nav a.active {
+    background-color: var(--secondary-color);
+}
+
+.content {
+    flex: 1;
+    margin-left: 280px;
+    padding: 2rem 3rem;
+    max-width: 900px;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    margin: 2rem 0 1rem 0;
+    color: var(--primary-color);
+}
+
+h1 {
+    font-size: 2.5rem;
+    text-align: center;
+    border-bottom: 3px solid var(--secondary-color);
+    padding-bottom: 1rem;
+    margin-bottom: 3rem;
+}
+
+h2 {
+    font-size: 1.8rem;
+    page-break-after: avoid;
+}
+
+h3 {
+    font-size: 1.4rem;
+}
+
+h4 {
+    font-size: 1.2rem;
+}
+
+p {
+    margin-bottom: 1rem;
+    text-align: justify;
+}
+
+a {
+    color: var(--secondary-color);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Lists */
+ul, ol {
+    margin: 1rem 0 1rem 2rem;
+}
+
+li {
+    margin-bottom: 0.5rem;
+}
+
+/* Code Blocks */
+pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 1rem;
+    overflow-x: auto;
+    margin: 1rem 0;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+}
+
+code {
+    background: var(--code-bg);
+    padding: 0.2rem 0.4rem;
+    border-radius: 2px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+}
+
+pre code {
+    background: none;
+    padding: 0;
+}
+
+/* Blockquotes */
+blockquote {
+    border-left: 4px solid var(--secondary-color);
+    padding-left: 1.5rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    color: #666;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+}
+
+th, td {
+    border: 1px solid var(--border-color);
+    padding: 0.75rem;
+    text-align: left;
+}
+
+th {
+    background: var(--light-gray);
+    font-weight: bold;
+}
+
+/* Diagrams and Images */
+.diagram-placeholder {
+    border: 2px dashed var(--border-color);
+    background: var(--light-gray);
+    padding: 2rem;
+    text-align: center;
+    margin: 2rem 0;
+    border-radius: 4px;
+}
+
+.diagram-placeholder img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Workflow Diagram */
+.workflow-diagram {
+    font-family: monospace;
+    background: var(--light-gray);
+    padding: 1rem;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+}
+
+/* Special Sections */
+.highlight-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    margin: 2rem 0;
+}
+
+.highlight-section h3 {
+    color: white;
+    border-bottom: 2px solid rgba(255,255,255,0.3);
+    padding-bottom: 0.5rem;
+}
+
+/* Feature Cards */
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.feature-card {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.feature-card h4 {
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+}
+
+/* Navigation */
+.top-nav {
+    background: var(--primary-color);
+    color: white;
+    padding: 1rem 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    border-radius: 4px;
+}
+
+.top-nav a {
+    color: white;
+    margin: 0 1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s;
+    }
+    
+    .sidebar.active {
+        transform: translateX(0);
+    }
+    
+    .content {
+        margin-left: 0;
+        padding: 1rem;
+    }
+    
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Section Numbers */
+.section-number {
+    color: var(--secondary-color);
+    font-weight: bold;
+    margin-right: 0.5rem;
+}
+
+/* Table of Contents */
+.toc {
+    background: var(--light-gray);
+    padding: 1.5rem;
+    border-radius: 4px;
+    margin: 2rem 0;
+}
+
+.toc h3 {
+    margin-top: 0;
+    color: var(--primary-color);
+}
+
+.toc ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.toc li {
+    margin-bottom: 0.3rem;
+}
+
+.toc a {
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+.toc a:hover {
+    text-decoration: underline;
+}
+
+.toc-level-2 {
+    padding-left: 2rem;
+    margin-top: 0.5rem;
+}
+
+.toc-level-3 {
+    padding-left: 3rem;
+    margin-top: 0.3rem;
+}

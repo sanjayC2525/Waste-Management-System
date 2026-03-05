@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Design - Garbage Collection Management System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar no-print">
+            <h1>GCMS Documentation</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Table of Contents</a></li>
+                    <li><a href="introduction.html">1. Introduction</a></li>
+                    <li><a href="system-analysis.html">2. System Analysis</a></li>
+                    <li><a href="system-design.html" class="active">3. System Design</a></li>
+                    <li><a href="database-design.html">4. Database Design</a></li>
+                    <li><a href="implementation.html">5. Implementation</a></li>
+                    <li><a href="testing.html">6. Testing</a></li>
+                    <li><a href="conclusion.html">7. Conclusion</a></li>
+                </ul>
+            </nav>
+        </div>
+        
+        <div class="content">
+            <nav class="top-nav no-print">
+                <a href="system-analysis.html">← System Analysis</a>
+                <a href="database-design.html">Database Design →</a>
+            </nav>
+            
+            <h1><span class="section-number">3</span> System Design</h1>
+            
+            <h2 id="31-system-architecture">3.1 System Architecture</h2>
+            
+            <h3>3.1.1 Three-Tier Architecture</h3>
+            <p>The Garbage Collection Management System implements a modern three-tier architecture that separates concerns and improves maintainability, scalability, and security:</p>
+            
+            <div class="diagram-placeholder">
+                <h4>System Architecture Diagram</h4>
+                <pre>
+┌─────────────────────────────────────────────────────────────┐
+│                    PRESENTATION TIER                        │
+│  React.js Frontend + TailwindCSS + Axios HTTP Client       │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ↓ REST API Calls
+┌─────────────────────────────────────────────────────────────┐
+│                   APPLICATION TIER                          │
+│     Node.js + Express.js + JWT Authentication + Multer     │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ↓ Database Queries
+┌─────────────────────────────────────────────────────────────┐
+│                      DATA TIER                              │
+│            SQLite Database + Prisma ORM Layer               │
+└─────────────────────────────────────────────────────────────┘
+                </pre>
+            </div>
+            
+            <h4>Presentation Tier (Client Layer)</h4>
+            <ul>
+                <li><strong>Web Browsers:</strong> Chrome, Firefox, Safari, Edge with modern JavaScript support</li>
+                <li><strong>User Interfaces:</strong> HTML5, CSS3, JavaScript with React.js component architecture</li>
+                <li><strong>Responsive Design:</strong> Mobile and desktop compatibility using TailwindCSS</li>
+                <li><strong>Client-side Validation:</strong> JavaScript form validation and user input sanitization</li>
+            </ul>
+            
+            <h4>Application Tier (Business Logic Layer)</h4>
+            <ul>
+                <li><strong>Web Server:</strong> Node.js with Express.js framework for RESTful API development</li>
+                <li><strong>Application Server:</strong> Node.js runtime with event-driven, non-blocking I/O</li>
+                <li><strong>Business Logic:</strong> JavaScript modules and functions implementing system workflows</li>
+                <li><strong>Session Management:</strong> JWT token handling with secure expiration and refresh</li>
+                <li><strong>Input Validation:</strong> Server-side validation and sanitization for security</li>
+            </ul>
+            
+            <h4>Data Tier (Database Layer)</h4>
+            <ul>
+                <li><strong>Database Server:</strong> SQLite with Prisma ORM for type-safe database operations</li>
+                <li><strong>Data Storage:</strong> Relational database tables with proper normalization</li>
+                <li><strong>Data Access:</strong> Prisma client providing auto-generated, type-safe database access</li>
+                <li><strong>Query Optimization:</strong> Indexed database design for optimal performance</li>
+            </ul>
+            
+            <h3>3.1.2 Component Architecture</h3>
+            <p>The system implements a modular architecture with clear separation of concerns, enabling independent development, testing, and maintenance of system components:</p>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>🎨 Frontend Components</h4>
+                    <ul>
+                        <li>React-based UI with role-specific dashboards</li>
+                        <li>Reusable components for forms, tables, and modals</li>
+                        <li>State management using React hooks and context</li>
+                        <li>Responsive design with TailwindCSS styling</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>🔌 API Layer</h4>
+                    <ul>
+                        <li>RESTful endpoints with proper HTTP methods</li>
+                        <li>JWT authentication middleware for security</li>
+                        <li>Request/response validation and error handling</li>
+                        <li>API documentation with OpenAPI specifications</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>⚙️ Business Logic</h4>
+                    <ul>
+                        <li>Service layer handling workflows and validations</li>
+                        <li>AI content moderation integration</li>
+                        <li>Notification system management</li>
+                        <li>Analytics and reporting calculations</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>🗄️ Data Access</h4>
+                    <ul>
+                        <li>Prisma ORM providing type-safe database operations</li>
+                        <li>Repository pattern for data access abstraction</li>
+                        <li>Database migrations and schema management</li>
+                        <li>Connection pooling and query optimization</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h2 id="32-technology-stack">3.2 Technology Stack</h2>
+            
+            <h3>3.2.1 Frontend Technology Stack</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>⚛️ React.js 18.2+</h4>
+                    <p>Component-based architecture with virtual DOM for efficient rendering and updates.</p>
+                    <ul>
+                        <li>Modern hooks-based state management</li>
+                        <li>Component reusability and maintainability</li>
+                        <li>Large ecosystem and community support</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>🔥 Vite 4.0+</h4>
+                    <p>Fast build tool with hot module replacement for rapid development.</p>
+                    <ul>
+                        <li>Lightning-fast development server</li>
+                        <li>Optimized production builds</li>
+                        <li>Modern ES module support</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>🎨 TailwindCSS 3.2+</h4>
+                    <p>Utility-first CSS framework for rapid styling and responsive design.</p>
+                    <ul>
+                        <li>Consistent design system implementation</li>
+                        <li>Built-in responsive utilities</li>
+                        <li>Performance-optimized CSS generation</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>🛣️ React Router DOM 6.8+</h4>
+                    <p>Client-side routing for single-page application navigation.</p>
+                    <ul>
+                        <li>Declarative routing configuration</li>
+                        <li>Route guards and protected routes</li>
+                        <li>Breadcrumb and navigation support</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>🌐 Axios 1.3+</h4>
+                    <p>HTTP client for API communication with interceptors and error handling.</p>
+                    <ul>
+                        <li>Promise-based API requests</li>
+                        <li>Request/response interceptors</li>
+                        <li>Automatic JSON transformation</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>🔔 React Hot Toast</h4>
+                    <p>Notification system for user feedback and alerts.</p>
+                    <ul>
+                        <li>Beautiful, customizable notifications</li>
+                        <li>Promise-based loading states</li>
+                        <li>Accessible and keyboard-friendly</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h3>3.2.2 Backend Technology Stack</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>🟢 Node.js 18+</h4>
+                    <p>JavaScript runtime built on Chrome's V8 JavaScript engine.</p>
+                    <ul>
+                        <li>Event-driven, non-blocking I/O model</li>
+                        <li>Large npm ecosystem</li>
+                        <li>Excellent performance for I/O operations</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>🚀 Express.js 4.18+</h4>
+                    <p>Fast, unopinionated, minimalist web framework for Node.js.</p>
+                    <ul>
+                        <li>Robust routing and HTTP utilities</li>
+                        <li>Middleware support for extensibility</li>
+                        <li>RESTful API development capabilities</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>🔐 JWT Authentication</h4>
+                    <p>JSON Web Tokens for secure, stateless authentication.</p>
+                    <ul>
+                        <li>Secure token-based authentication</li>
+                        <li>Role-based access control</li>
+                        <li>Automatic token expiration and refresh</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>🔒 bcryptjs</h4>
+                    <p>Password hashing library for secure credential storage.</p>
+                    <ul>
+                        <li>Strong password hashing with salt</li>
+                        <li>Resistance to brute force attacks</li>
+                        <li>Secure password comparison</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>📁 Multer 2.0+</h4>
+                    <p>Middleware for handling multipart/form-data for file uploads.</p>
+                    <ul>
+                        <li>Secure file upload handling</li>
+                        <li>File type and size validation</li>
+                        <li>Storage configuration flexibility</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>🛡️ Security Middleware</h4>
+                    <p>CORS configuration and Helmet for security headers.</p>
+                    <ul>
+                        <li>Cross-origin resource sharing setup</li>
+                        <li>Security headers enforcement</li>
+                        <li>Input validation and sanitization</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h3>3.2.3 Database Technology Stack</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>🗄️ SQLite 3.40+</h4>
+                    <p>Serverless, file-based database for easy development and deployment.</p>
+                    <ul>
+                        <li>Zero configuration required</li>
+                        <li>ACID compliance and reliability</li>
+                        <li>Cross-platform compatibility</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>🔮 Prisma ORM 5.0+</h4>
+                    <p>Next-generation ORM for type-safe database access.</p>
+                    <ul>
+                        <li>Auto-generated TypeScript client</li>
+                        <li>Declarative schema definition</li>
+                        <li>Database migrations and introspection</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>🛠️ Prisma Studio</h4>
+                    <p>Visual database browser for development and debugging.</p>
+                    <ul>
+                        <li>Intuitive database interface</li>
+                        <li>Query building and testing</li>
+                        <li>Data manipulation capabilities</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="page-break"></div>
+            
+            <h2 id="33-software-requirements-specification">3.3 Software Requirements Specification</h2>
+            
+            <h3>3.3.1 Functional Requirements</h3>
+            <p>The system must provide the following core functional capabilities:</p>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>👤 User Management</h4>
+                    <ul>
+                        <li>User registration with email verification</li>
+                        <li>Role-based authentication (Admin/Worker/Citizen)</li>
+                        <li>Password recovery and account management</li>
+                        <li>Profile management with image upload</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>📝 Garbage Report Management</h4>
+                    <ul>
+                        <li>Report submission with photo and GPS location</li>
+                        <li>Admin review and approval workflow</li>
+                        <li>Status tracking through complete lifecycle</li>
+                        <li>Report history and analytics</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>📋 Task Management</h4>
+                    <ul>
+                        <li>Automated task creation from approved reports</li>
+                        <li>Worker assignment and notification</li>
+                        <li>Task status updates and progress tracking</li>
+                        <li>Proof of work photo uploads</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>🤖 AI Moderation</h4>
+                    <ul>
+                        <li>Real-time content analysis</li>
+                        <li>Inappropriate content detection</li>
+                        <li>Severity classification and warnings</li>
+                        <li>Admin review of flagged content</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>🔔 Notifications</h4>
+                    <ul>
+                        <li>Real-time status change alerts</li>
+                        <li>Task assignment notifications</li>
+                        <li>Completion confirmations</li>
+                        <li>System announcements</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>📊 Analytics</h4>
+                    <ul>
+                        <li>Performance metrics dashboard</li>
+                        <li>Worker productivity tracking</li>
+                        <li>Service quality analytics</li>
+                        <li>Export capabilities for reports</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h3>3.3.2 Non-Functional Requirements</h3>
+            
+            <h4>3.3.2.1 Performance Requirements</h4>
+            <ul>
+                <li><strong>Response Time:</strong> Page load time &lt; 3 seconds for normal operations</li>
+                <li><strong>API Performance:</strong> Database queries &lt; 1 second for standard queries</li>
+                <li><strong>File Upload:</strong> File uploads &lt; 10 seconds for 5MB files</li>
+                <li><strong>Report Generation:</strong> Report generation &lt; 30 seconds for standard reports</li>
+                <li><strong>Concurrent Users:</strong> Support for 100+ concurrent users</li>
+                <li><strong>Request Throughput:</strong> Handle 500 requests/minute</li>
+                <li><strong>Database Transactions:</strong> Process 200 transactions/minute</li>
+                <li><strong>User Capacity:</strong> Support 10,000+ user accounts</li>
+                <li><strong>Daily Requests:</strong> Handle 1,000+ garbage requests per day</li>
+                <li><strong>Storage Capacity:</strong> 100GB+ for files and database</li>
+            </ul>
+            
+            <h4>3.3.2.2 Security Requirements</h4>
+            <ul>
+                <li><strong>Authentication:</strong> JWT-based authentication with 30-minute timeout</li>
+                <li><strong>Password Security:</strong> bcrypt password hashing with salt rounds (10+)</li>
+                <li><strong>Session Management:</strong> Secure token storage with automatic refresh</li>
+                <li><strong>Account Lockout:</strong> Progressive delay after failed attempts</li>
+                <li><strong>Authorization:</strong> Role-based access control (RBAC)</li>
+                <li><strong>API Security:</strong> JWT validation on all protected routes</li>
+                <li><strong>Resource Security:</strong> Permission checks for specific operations</li>
+                <li><strong>Route Protection:</strong> Role-based route guards in frontend</li>
+                <li><strong>Data Protection:</strong> Input validation and sanitization</li>
+                <li><strong>SQL Injection Prevention:</strong> Prisma ORM with parameterized queries</li>
+                <li><strong>XSS Protection:</strong> Content Security Policy and input encoding</li>
+                <li><strong>File Upload Security:</strong> Type checking, size limits, and validation</li>
+                <li><strong>HTTPS Enforcement:</strong> Secure data transmission in production</li>
+            </ul>
+            
+            <h4>3.3.2.3 Reliability Requirements</h4>
+            <ul>
+                <li><strong>System Availability:</strong> 99% uptime during business hours</li>
+                <li><strong>Maintenance Windows:</strong> Scheduled during off-peak hours</li>
+                <li><strong>Error Recovery:</strong> Automatic error recovery for critical functions</li>
+                <li><strong>Fault Tolerance:</strong> Graceful error handling and user feedback</li>
+                <li><strong>Database Recovery:</strong> Transaction rollback on failures</li>
+                <li><strong>Retry Mechanisms:</strong> Automatic retry for transient errors</li>
+                <li><strong>Data Integrity:</strong> Database constraints and validation rules</li>
+                <li><strong>Transaction Consistency:</strong> ACID compliance for data operations</li>
+                <li><strong>Backup Procedures:</strong> Regular backup and recovery procedures</li>
+            </ul>
+            
+            <h4>3.3.2.4 Scalability Requirements</h4>
+            <ul>
+                <li><strong>Horizontal Scaling:</strong> Modular architecture supporting multiple servers</li>
+                <li><strong>Load Balancing:</strong> Support for load balancing capabilities</li>
+                <li><strong>Database Scaling:</strong> Database read/write splitting support</li>
+                <li><strong>Code Optimization:</strong> Optimized code for performance</li>
+                <li><strong>Database Optimization:</strong> Database indexing and query optimization</li>
+                <li><strong>Caching Strategies:</strong> Caching mechanisms for frequently accessed data</li>
+            </ul>
+            
+            <h4>3.3.2.5 Usability Requirements</h4>
+            <ul>
+                <li><strong>Interface Design:</strong> Intuitive navigation and clear information hierarchy</li>
+                <li><strong>Design Consistency:</strong> Consistent design language across all pages</li>
+                <li><strong>Responsive Design:</strong> Responsive design for mobile and desktop</li>
+                <li><strong>Accessibility:</strong> WCAG 2.1 AA compliance for inclusive design</li>
+                <li><strong>Error Messages:</strong> Clear error messages and help text</li>
+                <li><strong>Progress Indicators:</strong> Progress indicators for long-running operations</li>
+                <li><strong>Undo Capabilities:</strong> Undo capabilities for critical operations</li>
+                <li><strong>Contextual Help:</strong> Contextual help and tooltips</li>
+            </ul>
+            
+            <h2 id="34-functional-requirements">3.4 Functional Requirements</h2>
+            
+            <h3>3.4.1 Detailed Functional Specifications</h3>
+            
+            <h4>FR-1: User Management System</h4>
+            <ul>
+                <li><strong>FR-1.1:</strong> User registration with email verification and role assignment</li>
+                <li><strong>FR-1.2:</strong> Role-based authentication with secure password handling</li>
+                <li><strong>FR-1.3:</strong> Password recovery with secure token generation</li>
+                <li><strong>FR-1.4:</strong> Profile management with image upload and validation</li>
+                <li><strong>FR-1.5:</strong> Account settings and preference management</li>
+            </ul>
+            
+            <h4>FR-2: Garbage Report System</h4>
+            <ul>
+                <li><strong>FR-2.1:</strong> Report submission with photo upload and GPS location</li>
+                <li><strong>FR-2.2:</strong> Admin review workflow with approval/rejection capabilities</li>
+                <li><strong>FR-2.3:</strong> Status tracking through complete request lifecycle</li>
+                <li><strong>FR-2.4:</strong> Report history with filtering and search capabilities</li>
+                <li><strong>FR-2.5:</strong> Request categorization and priority assignment</li>
+            </ul>
+            
+            <h4>FR-3: Task Management System</h4>
+            <ul>
+                <li><strong>FR-3.1:</strong> Automated task creation from approved reports</li>
+                <li><strong>FR-3.2:</strong> Worker assignment with availability and location consideration</li>
+                <li><strong>FR-3.3:</strong> Task status updates with progress tracking</li>
+                <li><strong>FR-3.4:</strong> Proof of work photo upload and validation</li>
+                <li><strong>FR-3.5:</strong> Task reassignment and escalation procedures</li>
+            </ul>
+            
+            <h4>FR-4: AI Content Moderation</h4>
+            <ul>
+                <li><strong>FR-4.1:</strong> Real-time content analysis for inappropriate material</li>
+                <li><strong>FR-4.2:</strong> Image scanning with object and content detection</li>
+                <li><strong>FR-4.3:</strong> Text analysis for profanity and threat detection</li>
+                <li><strong>FR-4.4:</strong> Severity classification with visual warnings</li>
+                <li><strong>FR-4.5:</strong> Admin review dashboard for flagged content</li>
+            </ul>
+            
+            <h2 id="35-non-functional-requirements">3.5 Non-Functional Requirements</h2>
+            
+            <h3>3.5.1 Quality Attributes</h3>
+            
+            <h4>Performance</h4>
+            <p>The system must maintain high performance under varying load conditions with sub-second response times for critical operations and efficient resource utilization.</p>
+            
+            <h4>Security</h4>
+            <p>Comprehensive security measures must protect user data, prevent unauthorized access, and ensure system integrity through multiple layers of protection.</p>
+            
+            <h4>Reliability</h4>
+            <p>The system must maintain high availability with minimal downtime, automatic error recovery, and data consistency guarantees.</p>
+            
+            <h4>Usability</h4>
+            <p>User interfaces must be intuitive, accessible, and efficient, requiring minimal training while supporting diverse user needs and abilities.</p>
+            
+            <h4>Scalability</h4>
+            <p>The architecture must support growth in users, data, and functionality without performance degradation or major redesign.</p>
+            
+            <h2 id="36-use-case-diagram-explanation">3.6 Use Case Diagram Explanation</h2>
+            
+            <h3>3.6.1 Primary Actors and Use Cases</h3>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>👤 Citizen Actor</h4>
+                    <ul>
+                        <li>Register Account</li>
+                        <li>Login to System</li>
+                        <li>Submit Garbage Request</li>
+                        <li>View Request History</li>
+                        <li>Submit Feedback</li>
+                        <li>Receive Notifications</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>👨‍💼 Administrator Actor</h4>
+                    <ul>
+                        <li>Admin Login</li>
+                        <li>Manage Users</li>
+                        <li>Review Requests</li>
+                        <li>Assign Workers</li>
+                        <li>Generate Reports</li>
+                        <li>View Analytics</li>
+                        <li>Handle Feedback</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>👷 Worker Actor</h4>
+                    <ul>
+                        <li>Driver Login</li>
+                        <li>View Assigned Tasks</li>
+                        <li>Update Task Status</li>
+                        <li>Upload Photos</li>
+                        <li>Report Issues</li>
+                        <li>View Performance</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h3>3.6.2 Use Case Relationships</h3>
+            <ul>
+                <li><strong>Include Relationships:</strong> Common functionality like authentication shared across multiple use cases</li>
+                <li><strong>Extend Relationships:</strong> Optional features like AI moderation extending base functionality</li>
+                <li><strong>Generalization:</strong> Role-based inheritance of permissions and capabilities</li>
+            </ul>
+            
+            <h2 id="37-data-flow-diagram-explanation">3.7 Data Flow Diagram Explanation</h2>
+            
+            <h3>3.7.1 Level 0 DFD (Context Diagram)</h3>
+            <p>External entities (Citizen, Admin, Worker) interact with the central GCMS through data flows including requests, assignments, status updates, and notifications.</p>
+            
+            <h3>3.7.2 Level 1 DFD</h3>
+            <p>Main processes include:</p>
+            <ul>
+                <li>User Authentication Process</li>
+                <li>Request Management Process</li>
+                <li>Task Execution Process</li>
+                <li>Reporting and Analytics Process</li>
+            </ul>
+            
+            <h3>3.7.3 Level 2 DFD</h3>
+            <p>Detailed subprocesses showing:</p>
+            <ul>
+                <li>Request validation and storage</li>
+                <li>Worker assignment algorithms</li>
+                <li>Status update workflows</li>
+                <li>Notification generation logic</li>
+            </ul>
+            
+            <h2 id="38-security-architecture">3.8 Security Architecture</h2>
+            
+            <h3>3.8.1 Authentication Framework</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>🔐 JWT Token System</h4>
+                    <ul>
+                        <li>Secure token-based authentication</li>
+                        <li>30-minute expiration with refresh</li>
+                        <li>Role-based claims and permissions</li>
+                        <li>Secure token storage mechanisms</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>🔒 Password Security</h4>
+                    <ul>
+                        <li>bcrypt hashing with salt rounds (10+)</li>
+                        <li>Secure password comparison</li>
+                        <li>Password strength validation</li>
+                        <li>Secure password reset workflow</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>🛡️ Session Management</h4>
+                    <ul>
+                        <li>Secure token storage</li>
+                        <li>Automatic refresh mechanism</li>
+                        <li>Session timeout handling</li>
+                        <li>Multi-device session support</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>🚫 Account Lockout</h4>
+                    <ul>
+                        <li>Progressive delay after failed attempts</li>
+                        <li>Temporary account suspension</li>
+                        <li>Automated account recovery</li>
+                        <li>Suspicious activity detection</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h3>3.8.2 Authorization System</h3>
+            <ul>
+                <li><strong>Role-Based Access Control (RBAC):</strong> Granular permissions per user role</li>
+                <li><strong>API Authorization Middleware:</strong> JWT validation on all protected routes</li>
+                <li><strong>Resource-Level Security:</strong> Permission checks for specific operations</li>
+                <li><strong>Route Protection:</strong> Role-based route guards in frontend</li>
+            </ul>
+            
+            <h3>3.8.3 Data Protection Measures</h3>
+            <ul>
+                <li><strong>Input Validation:</strong> Comprehensive validation and sanitization</li>
+                <li><strong>SQL Injection Prevention:</strong> Prisma ORM with parameterized queries</li>
+                <li><strong>XSS Protection:</strong> Content Security Policy and input encoding</li>
+                <li><strong>File Upload Security:</strong> Type checking, size limits, and validation</li>
+                <li><strong>HTTPS Enforcement:</strong> Secure data transmission in production</li>
+            </ul>
+            
+            <nav class="top-nav no-print">
+                <a href="system-analysis.html">← System Analysis</a>
+                <a href="database-design.html">Database Design →</a>
+            </nav>
+        </div>
+    </div>
+</body>
+</html>

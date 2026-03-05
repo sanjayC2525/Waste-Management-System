@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Design - Garbage Collection Management System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar no-print">
+            <h1>GCMS Documentation</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Table of Contents</a></li>
+                    <li><a href="introduction.html">1. Introduction</a></li>
+                    <li><a href="system-analysis.html">2. System Analysis</a></li>
+                    <li><a href="system-design.html">3. System Design</a></li>
+                    <li><a href="database-design.html" class="active">4. Database Design</a></li>
+                    <li><a href="implementation.html">5. Implementation</a></li>
+                    <li><a href="testing.html">6. Testing</a></li>
+                    <li><a href="conclusion.html">7. Conclusion</a></li>
+                </ul>
+            </nav>
+        </div>
+        
+        <div class="content">
+            <nav class="top-nav no-print">
+                <a href="system-design.html">← System Design</a>
+                <a href="implementation.html">Implementation →</a>
+            </nav>
+            
+            <h1><span class="section-number">4</span> Database Design</h1>
+            
+            <h2 id="41-database-architecture">4.1 Database Architecture</h2>
+            
+            <h3>4.1.1 Database Technology Stack</h3>
+            <p>The system uses SQLite with Prisma ORM for type-safe database operations. This combination provides an excellent balance of simplicity, performance, and developer productivity:</p>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>🗄️ SQLite Database</h4>
+                    <ul>
+                        <li>Serverless, file-based database for easy deployment</li>
+                        <li>ACID compliance for data integrity</li>
+                        <li>Zero configuration and maintenance</li>
+                        <li>Excellent performance for read-heavy operations</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>🔮 Prisma ORM</h4>
+                    <ul>
+                        <li>Type-safe database access with auto-generated client</li>
+                        <li>Declarative schema definition with migrations</li>
+                        <li>Excellent developer experience with Prisma Studio</li>
+                        <li>Built-in query optimization and caching</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>🛠️ Development Tools</h4>
+                    <ul>
+                        <li>Prisma Studio for visual database management</li>
+                        <li>Automatic schema migrations</li>
+                        <li>Database seeding for development</li>
+                        <li>Query introspection and debugging</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h3>4.1.2 Design Principles</h3>
+            <p>The database design follows established principles to ensure data integrity, performance, and maintainability:</p>
+            
+            <ul>
+                <li><strong>Normalization:</strong> 3NF compliance to eliminate data redundancy and ensure data integrity</li>
+                <li><strong>Referential Integrity:</strong> Foreign key constraints with cascading rules to maintain consistent relationships</li>
+                <li><strong>Performance Optimization:</strong> Strategic indexing for frequently queried columns and join operations</li>
+                <li><strong>Scalability:</strong> Design supporting future data growth and potential migration to larger databases</li>
+                <li><strong>Security:</strong> Protection of sensitive user and operational data through proper access controls</li>
+                <li><strong>Auditability:</strong> Comprehensive logging of system activities for compliance and dispute resolution</li>
+            </ul>
+            
+            <h2 id="42-entity-relationship-diagram-explanation">4.2 Entity Relationship Diagram Explanation</h2>
+            
+            <h3>4.2.1 Core Entities</h3>
+            <p>The system comprises eight primary entities with well-defined relationships supporting the complete waste management workflow:</p>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>👤 User</h4>
+                    <p>Central entity for all system users (Citizens, Admins, Drivers)</p>
+                    <ul>
+                        <li>Authentication credentials and profile information</li>
+                        <li>Role-based permissions and access control</li>
+                        <li>Relationship to all other entities through user actions</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>📝 GarbageReport</h4>
+                    <p>Citizen pickup requests with complete lifecycle tracking</p>
+                    <ul>
+                        <li>Photo evidence and GPS location data</li>
+                        <li>Status progression through approval workflow</li>
+                        <li>Assignment to workers and task creation</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>📋 Task</h4>
+                    <p>Worker assignments linking reports to field operations</p>
+                    <ul>
+                        <li>Scheduled collection times and locations</li>
+                        <li>Status tracking and completion verification</li>
+                        <li>Proof of work documentation</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>👷 Worker</h4>
+                    <p>Extended driver profiles for workforce management</p>
+                    <ul>
+                        <li>Performance metrics and workload tracking</li>
+                        <li>Availability and capacity management</li>
+                        <li>Specialized worker attributes and skills</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>💬 Feedback</h4>
+                    <p>Citizen feedback and admin responses with AI analysis</p>
+                    <ul>
+                        <li>Categorized feedback types and priorities</li>
+                        <li>AI-powered content moderation</li>
+                        <li>Resolution tracking and admin responses</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>⚠️ Issue</h4>
+                    <p>Dispute resolution and service issue tracking</p>
+                    <ul>
+                        <li>Service quality complaints and disputes</li>
+                        <li>Escalation workflows and resolution tracking</li>
+                        <li>Link to specific reports and workers</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>🔔 Notification</h4>
+                    <p>System communications and user alerts</p>
+                    <ul>
+                        <li>Role-based notification filtering</li>
+                        <li>Priority levels and delivery tracking</li>
+                        <li>Read/unread status management</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>📋 AuditLog</h4>
+                    <p>Comprehensive activity tracking for security and compliance</p>
+                    <ul>
+                        <li>All system actions with user context</li>
+                        <li>Entity change history and values</li>
+                        <li>Security event monitoring and alerting</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h3>4.2.2 Relationship Types</h3>
+            <ul>
+                <li><strong>One-to-Many:</strong> User to GarbageReports, User to Tasks, User to Notifications</li>
+                <li><strong>One-to-One:</strong> User to Worker profile, GarbageReport to primary Task</li>
+                <li><strong>Many-to-Many:</strong> Resolved through junction tables for complex relationships</li>
+                <li><strong>Recursive:</strong> Self-referencing relationships for hierarchical data</li>
+            </ul>
+            
+            <h2 id="43-table-structures">4.3 Table Structures</h2>
+            
+            <h3>4.3.1 User Table</h3>
+            <p><strong>Purpose:</strong> Stores authentication credentials and profile information for all system users</p>
+            
+            <pre><code>CREATE TABLE Users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(50) NOT NULL, -- Admin, Worker, Citizen
+    profileImage VARCHAR(255),
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP
+);</code></pre>
+            
+            <p><strong>Relationships:</strong></p>
+            <ul>
+                <li>One-to-many with GarbageRequest (citizen requests)</li>
+                <li>One-to-many with Task (driver assignments)</li>
+                <li>One-to-many with Feedback (citizen feedback)</li>
+                <li>One-to-many with Issue (user issues)</li>
+                <li>One-to-one with Worker (driver profile)</li>
+            </ul>
+            
+            <h3>4.3.2 GarbageReport Table</h3>
+            <p><strong>Purpose:</strong> Manages citizen garbage pickup requests with complete lifecycle tracking</p>
+            
+            <pre><code>CREATE TABLE GarbageReports (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    imagePath VARCHAR(255) NOT NULL,
+    latitude REAL NOT NULL,
+    longitude REAL NOT NULL,
+    status VARCHAR(50) DEFAULT 'REPORTED',
+    citizenId INTEGER NOT NULL,
+    assignedWorkerId INTEGER,
+    preferredDate DATETIME,
+    address VARCHAR(255),
+    notes TEXT,
+    adminNotes TEXT,
+    statusHistory TEXT, -- JSON string
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (citizenId) REFERENCES Users(id),
+    FOREIGN KEY (assignedWorkerId) REFERENCES Users(id)
+);</code></pre>
+            
+            <p><strong>Relationships:</strong></p>
+            <ul>
+                <li>Many-to-one with User (citizen and driver)</li>
+                <li>One-to-one with Task (assignment)</li>
+                <li>One-to-many with Issue (related disputes)</li>
+            </ul>
+            
+            <h3>4.3.3 Task Table</h3>
+            <p><strong>Purpose:</strong> Tracks driver assignments and task execution with proof of work</p>
+            
+            <pre><code>CREATE TABLE Tasks (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    garbageReportId INTEGER,
+    latitude REAL NOT NULL,
+    longitude REAL NOT NULL,
+    scheduledTime DATETIME NOT NULL,
+    status VARCHAR(50) DEFAULT 'ASSIGNED',
+    workerId INTEGER NOT NULL,
+    statusHistory TEXT, -- JSON string
+    completedAt DATETIME,
+    acceptedAt DATETIME,
+    unableReason TEXT,
+    proofImage VARCHAR(255),
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (garbageReportId) REFERENCES GarbageReports(id),
+    FOREIGN KEY (workerId) REFERENCES Users(id)
+);</code></pre>
+            
+            <p><strong>Relationships:</strong></p>
+            <ul>
+                <li>Many-to-one with GarbageReport</li>
+                <li>Many-to-one with User (driver)</li>
+            </ul>
+            
+            <h3>4.3.4 Worker Table</h3>
+            <p><strong>Purpose:</strong> Extended profile information for driver workforce management</p>
+            
+            <pre><code>CREATE TABLE Workers (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    userId INTEGER UNIQUE NOT NULL,
+    currentWorkload INTEGER DEFAULT 0,
+    maxTasks INTEGER DEFAULT 10,
+    performanceRating REAL DEFAULT 0,
+    totalTasksCompleted INTEGER DEFAULT 0,
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (userId) REFERENCES Users(id)
+);</code></pre>
+            
+            <p><strong>Relationships:</strong></p>
+            <ul>
+                <li>One-to-one with User</li>
+                <li>One-to-many with Task</li>
+                <li>One-to-many with Feedback</li>
+            </ul>
+            
+            <h3>4.3.5 Feedback Table</h3>
+            <p><strong>Purpose:</strong> Manages citizen feedback, complaints, and administrator responses</p>
+            
+            <pre><code>CREATE TABLE Feedback (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    type VARCHAR(50) NOT NULL, -- COMPLAINT, SUGGESTION, ISSUE, COMPLIMENT
+    title VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    category VARCHAR(50) NOT NULL, -- SERVICE, WORKER, SYSTEM, OTHER
+    priority VARCHAR(20) DEFAULT 'MEDIUM', -- LOW, MEDIUM, HIGH, URGENT
+    status VARCHAR(20) DEFAULT 'OPEN', -- OPEN, IN_PROGRESS, RESOLVED, REJECTED
+    citizenId INTEGER NOT NULL,
+    adminId INTEGER,
+    workerId INTEGER,
+    adminReply TEXT,
+    adminNotes TEXT,
+    replied BOOLEAN DEFAULT FALSE,
+    aiAnalysis TEXT, -- JSON string of AI content analysis
+    isFlagged BOOLEAN DEFAULT FALSE,
+    flaggedAt DATETIME,
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (citizenId) REFERENCES Users(id),
+    FOREIGN KEY (adminId) REFERENCES Users(id),
+    FOREIGN KEY (workerId) REFERENCES Workers(id)
+);</code></pre>
+            
+            <p><strong>Relationships:</strong></p>
+            <ul>
+                <li>Many-to-one with User (citizen and admin)</li>
+                <li>Many-to-one with Worker</li>
+            </ul>
+            
+            <h3>4.3.6 Issue Table</h3>
+            <p><strong>Purpose:</strong> Handles dispute resolution, service issues, and quality assurance</p>
+            
+            <pre><code>CREATE TABLE Issues (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    type VARCHAR(50) NOT NULL, -- DISPUTE, SERVICE_ISSUE, TECHNICAL
+    title VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    category VARCHAR(50) NOT NULL, -- REPORT_REJECTED, WORKER_CONDUCT, SYSTEM_ERROR, OTHER
+    priority VARCHAR(20) DEFAULT 'MEDIUM', -- LOW, MEDIUM, HIGH, URGENT
+    status VARCHAR(20) DEFAULT 'PENDING', -- PENDING, IN_REVIEW, RESOLVED, REJECTED
+    citizenId INTEGER NOT NULL,
+    workerId INTEGER,
+    adminId INTEGER,
+    garbageReportId INTEGER,
+    resolution TEXT,
+    replied BOOLEAN DEFAULT FALSE,
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (citizenId) REFERENCES Users(id),
+    FOREIGN KEY (workerId) REFERENCES Users(id),
+    FOREIGN KEY (adminId) REFERENCES Users(id),
+    FOREIGN KEY (garbageReportId) REFERENCES GarbageReports(id)
+);</code></pre>
+            
+            <p><strong>Relationships:</strong></p>
+            <ul>
+                <li>Many-to-one with User (citizen, driver, admin)</li>
+                <li>Many-to-one with GarbageReport</li>
+            </ul>
+            
+            <h3>4.3.7 Notification Table</h3>
+            <p><strong>Purpose:</strong> Manages system notifications and user communications</p>
+            
+            <pre><code>CREATE TABLE Notifications (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title VARCHAR(255) NOT NULL,
+    message TEXT NOT NULL,
+    type VARCHAR(20) NOT NULL, -- INFO, SUCCESS, WARNING, ERROR
+    category VARCHAR(20) NOT NULL, -- REPORT, TASK, FEEDBACK, ISSUE, SYSTEM
+    isRead BOOLEAN DEFAULT FALSE,
+    userId INTEGER NOT NULL,
+    relatedId INTEGER, -- ID of related entity
+    priority VARCHAR(10) DEFAULT 'NORMAL', -- LOW, NORMAL, HIGH, URGENT
+    expiresAt DATETIME,
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (userId) REFERENCES Users(id)
+);</code></pre>
+            
+            <p><strong>Relationships:</strong></p>
+            <ul>
+                <li>Many-to-one with User</li>
+            </ul>
+            
+            <h3>4.3.8 AuditLog Table</h3>
+            <p><strong>Purpose:</strong> Comprehensive audit trail for security and compliance</p>
+            
+            <pre><code>CREATE TABLE AuditLogs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    action VARCHAR(50) NOT NULL, -- CREATE, UPDATE, DELETE, LOGIN, LOGOUT, ASSIGN, COMPLETE
+    entity VARCHAR(50) NOT NULL, -- USER, REPORT, TASK, FEEDBACK, ISSUE
+    entityId INTEGER,
+    oldValues TEXT, -- JSON string of old values
+    newValues TEXT, -- JSON string of new values
+    userId INTEGER NOT NULL,
+    userAgent TEXT,
+    ipAddress VARCHAR(45),
+    sessionId VARCHAR(255),
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (userId) REFERENCES Users(id)
+);</code></pre>
+            
+            <p><strong>Relationships:</strong></p>
+            <ul>
+                <li>Many-to-one with User</li>
+            </ul>
+            
+            <div class="page-break"></div>
+            
+            <h2 id="44-notification-system-design">4.4 Notification System Design</h2>
+            
+            <h3>4.4.1 Notification Architecture</h3>
+            <p>The notification system provides real-time communication between all system stakeholders through a centralized notification management framework that ensures timely and relevant information delivery.</p>
+            
+            <h3>4.4.2 Notification Types</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>📈 Status Change Alerts</h4>
+                    <ul>
+                        <li>Request status updates (submitted, approved, assigned, completed)</li>
+                        <li>Task progress notifications (accepted, in-progress, completed)</li>
+                        <li>Feedback and issue status changes</li>
+                        <li>System maintenance and downtime notifications</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>📋 Task Assignment Notifications</h4>
+                    <ul>
+                        <li>New task assignments to workers</li>
+                        <li>Task reassignment notifications</li>
+                        <li>Deadline reminders and urgent tasks</li>
+                        <li>Workload management alerts</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>✅ Completion Notifications</h4>
+                    <ul>
+                        <li>Service completion confirmations to citizens</li>
+                        <li>Proof of work notifications</li>
+                        <li>Quality assurance completion alerts</li>
+                        <li>Performance milestone achievements</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>💬 Feedback Alerts</h4>
+                    <ul>
+                        <li>New feedback submissions to administrators</li>
+                        <li>Admin response notifications to citizens</li>
+                        <li>AI moderation alerts for flagged content</li>
+                        <li>Resolution notifications for closed feedback</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h3>4.4.3 Notification Flow</h3>
+            <div class="workflow-diagram">
+Event Trigger → Notification Generation → User Filtering → Database Storage → Real-time Delivery
+            </div>
+            
+            <h3>4.4.4 Notification Features</h3>
+            <ul>
+                <li><strong>Role-Based Filtering:</strong> Notifications filtered by user role and relevance to reduce noise</li>
+                <li><strong>Read/Unread Tracking:</strong> Comprehensive notification status management with read receipts</li>
+                <li><strong>Priority Levels:</strong> Critical, high, medium, low priority notifications with appropriate handling</li>
+                <li><strong>Batch Processing:</strong> Efficient notification delivery for multiple users and bulk operations</li>
+                <li><strong>History Management:</strong> Complete notification history with search and filtering capabilities</li>
+                <li><strong>Expiration Management:</strong> Automatic cleanup of expired notifications to maintain performance</li>
+            </ul>
+            
+            <h2 id="45-audit-logging-system">4.5 Audit Logging System</h2>
+            
+            <h3>4.5.1 Audit System Architecture</h3>
+            <p>The audit logging system provides comprehensive activity tracking for security, compliance, and dispute resolution. Every significant action in the system is automatically logged with detailed context, ensuring complete transparency and accountability.</p>
+            
+            <h3>4.5.2 Logged Activities</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>👤 User Actions</h4>
+                    <ul>
+                        <li>Login, logout, profile changes, password updates</li>
+                        <li>Account creation and deletion</li>
+                        <li>Permission changes and role modifications</li>
+                        <li>Preference and setting updates</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>📝 Report Operations</h4>
+                    <ul>
+                        <li>Report creation, modification, deletion</li>
+                        <li>Approval and rejection actions</li>
+                        <li>Status changes and transitions</li>
+                        <li>Assignment and reassignment operations</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>📋 Task Management</h4>
+                    <ul>
+                        <li>Task creation and assignment</li>
+                        <li>Status updates and progress changes</li>
+                        <li>Completion verification and proof upload</li>
+                        <li>Escalation and reassignment actions</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>🔐 Security Events</h4>
+                    <ul>
+                        <li>Failed login attempts and account lockouts</li>
+                        <li>Permission violations and access denials</li>
+                        <li>Suspicious activities and anomaly detection</li>
+                        <li>Security configuration changes</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h3>4.5.3 Audit Data Structure</h3>
+            <ul>
+                <li><strong>Action Type:</strong> Categorized operation (CREATE, UPDATE, DELETE, LOGIN, LOGOUT, ASSIGN, COMPLETE)</li>
+                <li><strong>Entity Information:</strong> Affected database entity and ID for precise tracking</li>
+                <li><strong>Change Tracking:</strong> Before/after values for update operations in JSON format</li>
+                <li><strong>User Context:</strong> User ID, IP address, user agent, and session information</li>
+                <li><strong>Timestamp:</strong> Precise event timing with timezone support for chronological analysis</li>
+            </ul>
+            
+            <h3>4.5.4 Audit System Benefits</h3>
+            <ul>
+                <li><strong>Transparency:</strong> Complete visibility into all system operations and user activities</li>
+                <li><strong>Accountability:</strong> Clear responsibility tracking for all actions and decisions</li>
+                <li><strong>Security:</strong> Early detection of suspicious activities and potential security breaches</li>
+                <li><strong>Compliance:</strong> Support for regulatory requirements and audit obligations</li>
+                <li><strong>Dispute Resolution:</strong> Historical evidence for issue investigation and conflict resolution</li>
+                <li><strong>Performance Analysis:</strong> Data for system usage patterns and optimization opportunities</li>
+            </ul>
+            
+            <h2 id="46-analytics-system">4.6 Analytics System</h2>
+            
+            <h3>4.6.1 Analytics Dashboard Architecture</h3>
+            <p>The analytics system provides comprehensive insights into system performance, worker productivity, and service quality through interactive dashboards and detailed reports that enable data-driven decision making.</p>
+            
+            <h3>4.6.2 Key Performance Indicators</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>📊 Request Metrics</h4>
+                    <ul>
+                        <li>Total requests and submission trends</li>
+                        <li>Approval rate and rejection analysis</li>
+                        <li>Average resolution time and processing efficiency</li>
+                        <li>Request distribution by location and time</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>👷 Worker Performance</h4>
+                    <ul>
+                        <li>Tasks completed per worker and productivity rates</li>
+                        <li>Average completion time and efficiency metrics</li>
+                        <li>Photo upload compliance and quality scores</li>
+                        <li>Customer satisfaction ratings and feedback</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>⚡ System Activity</h4>
+                    <ul>
+                        <li>User engagement patterns and peak usage times</li>
+                        <li>System response times and performance metrics</li>
+                        <li>Error rates and system reliability statistics</li>
+                        <li>Resource utilization and capacity planning</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>🎯 Service Quality</h4>
+                    <ul>
+                        <li>Citizen satisfaction scores and trends</li>
+                        <li>Feedback resolution rates and response times</li>
+                        <li>Issue tracking and dispute resolution metrics</li>
+                        <li>Service level agreement compliance</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h3>4.6.3 Analytics Features</h3>
+            <ul>
+                <li><strong>Real-Time Dashboards:</strong> Live data visualization with auto-refresh and real-time updates</li>
+                <li><strong>Historical Trends:</strong> Time-series analysis for performance tracking and trend identification</li>
+                <li><strong>Comparative Analysis:</strong> Worker and period-over-period comparisons with benchmarking</li>
+                <li><strong>Export Capabilities:</strong> PDF and Excel export for reports and compliance documentation</li>
+                <li><strong>Custom Reports:</strong> User-defined report parameters and filters for specialized analysis</li>
+                <li><strong>Predictive Analytics:</strong> Forecasting capabilities for resource planning and demand prediction</li>
+            </ul>
+            
+            <h3>4.6.4 Data Visualization</h3>
+            <ul>
+                <li><strong>Charts and Graphs:</strong> Bar charts, line graphs, pie charts for data representation</li>
+                <li><strong>Heat Maps:</strong> Geographic visualization of request density and service coverage</li>
+                <li><strong>Performance Metrics:</strong> KPI cards with trend indicators and target comparisons</li>
+                <li><strong>Interactive Filters:</strong> Dynamic data filtering and drill-down capabilities</li>
+                <li><strong>Custom Visualizations:</strong> Specialized charts for waste management metrics</li>
+            </ul>
+            
+            <div class="highlight-section">
+                <h3>🎯 Database Performance Optimization</h3>
+                <p>Several optimization strategies ensure excellent database performance:</p>
+                <ul>
+                    <li><strong>Strategic Indexing:</strong> Primary and secondary indexes on frequently queried columns</li>
+                    <li><strong>Query Optimization:</strong> Efficient SQL queries with proper joins and filtering</li>
+                    <li><strong>Connection Pooling:</strong> Database connection management for concurrent access</li>
+                    <li><strong>Caching Strategies:</strong> Application-level caching for frequently accessed data</li>
+                    <li><strong>Regular Maintenance:</strong> Database optimization and statistics updates</li>
+                </ul>
+            </div>
+            
+            <nav class="top-nav no-print">
+                <a href="system-design.html">← System Design</a>
+                <a href="implementation.html">Implementation →</a>
+            </nav>
+        </div>
+    </div>
+</body>
+</html>

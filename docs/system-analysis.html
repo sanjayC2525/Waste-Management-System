@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Analysis - Garbage Collection Management System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar no-print">
+            <h1>GCMS Documentation</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Table of Contents</a></li>
+                    <li><a href="introduction.html">1. Introduction</a></li>
+                    <li><a href="system-analysis.html" class="active">2. System Analysis</a></li>
+                    <li><a href="system-design.html">3. System Design</a></li>
+                    <li><a href="database-design.html">4. Database Design</a></li>
+                    <li><a href="implementation.html">5. Implementation</a></li>
+                    <li><a href="testing.html">6. Testing</a></li>
+                    <li><a href="conclusion.html">7. Conclusion</a></li>
+                </ul>
+            </nav>
+        </div>
+        
+        <div class="content">
+            <nav class="top-nav no-print">
+                <a href="introduction.html">← Introduction</a>
+                <a href="system-design.html">System Design →</a>
+            </nav>
+            
+            <h1><span class="section-number">2</span> System Analysis</h1>
+            
+            <h2 id="21-existing-system">2.1 Existing System</h2>
+            
+            <h3>2.1.1 Traditional Waste Management Methods</h3>
+            <p>Conventional garbage collection systems in most municipalities follow outdated manual approaches that suffer from numerous inefficiencies:</p>
+            
+            <ul>
+                <li><strong>Manual Request Submission:</strong> Citizens must contact municipal offices via phone calls or in-person visits, creating barriers to service access and limited availability outside business hours.</li>
+                <li><strong>Paper-Based Records:</strong> All requests and assignments are maintained on paper registers, making data retrieval difficult, prone to loss, and impossible to analyze effectively.</li>
+                <li><strong>Fixed Route Collection:</strong> Drivers follow predetermined routes without dynamic optimization, leading to inefficient fuel consumption and inability to respond to urgent requests.</li>
+                <li><strong>Limited Communication:</strong> Status updates are communicated through phone calls or physical notices, resulting in delays and miscommunication.</li>
+                <li><strong>No Performance Monitoring:</strong> Limited tracking of collection activities and driver performance makes it impossible to identify inefficiencies or improve service quality.</li>
+            </ul>
+            
+            <h3>2.1.2 Operational Challenges</h3>
+            <p>The existing system suffers from several critical operational inefficiencies that impact service delivery and citizen satisfaction:</p>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>📱 No Real-Time Information</h4>
+                    <p>No centralized system to track current status of requests, making it impossible for administrators to monitor operations or for citizens to check progress.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🗣️ Communication Gaps</h4>
+                    <p>Poor coordination between citizens, administrators, and drivers leads to misunderstandings, delays, and reduced service quality.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>⚡ Resource Inefficiency</h4>
+                    <p>No optimization of routes or workload distribution results in wasted fuel, time, and human resources.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📊 Data Management Issues</h4>
+                    <p>Paper-based records are prone to loss, difficult to analyze, and impossible to use for strategic planning or performance improvement.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🎯 Service Quality Variations</h4>
+                    <p>Inconsistent service delivery due to manual processes, lack of standardization, and inability to track or enforce quality metrics.</p>
+                </div>
+            </div>
+            
+            <h3>2.1.3 Specific Limitations</h3>
+            
+            <h4>2.1.3.1 No Tracking System</h4>
+            <ul>
+                <li>Citizens cannot track the status of their garbage pickup requests after submission</li>
+                <li>Administrators lack visibility into ongoing collection activities and worker locations</li>
+                <li>No audit trail for service delivery and performance monitoring</li>
+                <li>Inability to identify bottlenecks or areas requiring improvement</li>
+            </ul>
+            
+            <h4>2.1.3.2 Delayed Pickup Services</h4>
+            <ul>
+                <li>Manual assignment processes lead to significant delays in task allocation</li>
+                <li>Fixed routes don't account for dynamic changes in collection requirements or urgent requests</li>
+                <li>No prioritization mechanism for urgent or high-volume requests</li>
+                <li>Inability to respond quickly to emergency situations or citizen complaints</li>
+            </ul>
+            
+            <h4>2.1.3.3 Lack of Transparency</h4>
+            <ul>
+                <li>Citizens have no visibility into the collection process or expected timelines</li>
+                <li>No clear communication about service schedules and status updates</li>
+                <li>Limited accountability in service delivery and performance measurement</li>
+                <li>Difficulty in resolving disputes or addressing service complaints</li>
+            </ul>
+            
+            <h4>2.1.3.4 Poor Communication Channels</h4>
+            <ul>
+                <li>Reliance on phone calls and in-person visits for all interactions</li>
+                <li>No standardized notification system for status updates</li>
+                <li>Difficult to reach municipal authorities outside office hours</li>
+                <li>Limited multilingual support for diverse communities</li>
+            </ul>
+            
+            <h4>2.1.3.5 No Centralized Database</h4>
+            <ul>
+                <li>Data scattered across multiple paper registers and individual records</li>
+                <li>Difficult to generate comprehensive reports and analytics</li>
+                <li>No backup mechanism for critical operational data</li>
+                <li>Inability to perform data analysis for operational improvements</li>
+            </ul>
+            
+            <div class="page-break"></div>
+            
+            <h2 id="22-proposed-system">2.2 Proposed System</h2>
+            
+            <h3>2.2.1 System Overview</h3>
+            <p>The Web-Based Garbage Collection Management System introduces a comprehensive digital transformation that addresses all identified challenges through four interconnected modules working together to provide efficient, transparent, and accountable garbage collection services.</p>
+            
+            <p>The system leverages modern web technologies to create a unified platform that serves all stakeholders - citizens requesting service, workers performing collections, and administrators managing operations. By digitizing the entire workflow, the system eliminates manual processes, improves communication, and enables data-driven decision making.</p>
+            
+            <h3>2.2.2 Key Advantages</h3>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>⚡ Efficient Scheduling</h4>
+                    <ul>
+                        <li>Automated request processing and task assignment</li>
+                        <li>Dynamic route optimization based on real-time data</li>
+                        <li>Prioritization of urgent requests and high-volume areas</li>
+                        <li>Reduced response times and improved service efficiency</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>🗄️ Centralized Database</h4>
+                    <ul>
+                        <li>Unified data repository for all garbage collection operations</li>
+                        <li>Structured data format enabling comprehensive analytics</li>
+                        <li>Secure data backup and disaster recovery capabilities</li>
+                        <li>Real-time data synchronization across all modules</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>🔍 Transparency and Accountability</h4>
+                    <ul>
+                        <li>Real-time visibility into all collection activities</li>
+                        <li>Clear audit trails for all system transactions</li>
+                        <li>Performance metrics for drivers and administrators</li>
+                        <li>Enhanced citizen trust through transparent operations</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>🤖 Reduced Manual Work</h4>
+                    <ul>
+                        <li>Automation of routine administrative tasks</li>
+                        <li>Elimination of paper-based record keeping</li>
+                        <li>Streamlined communication between all stakeholders</li>
+                        <li>Reduced human error and improved accuracy</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>📈 Scalable Architecture</h4>
+                    <ul>
+                        <li>Modular design allowing easy expansion</li>
+                        <li>Support for multiple municipalities and service areas</li>
+                        <li>Flexible configuration for different operational requirements</li>
+                        <li>Future-proof technology stack supporting growth</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h3>2.2.3 Expected Outcomes</h3>
+            <p>The implementation of this system is expected to deliver significant improvements across all aspects of waste management operations:</p>
+            
+            <ul>
+                <li><strong>Improved Service Quality:</strong> Faster response times and more reliable service delivery through automated workflows and optimized scheduling.</li>
+                <li><strong>Cost Reduction:</strong> Optimized routes and reduced operational overhead through data-driven resource allocation and efficient workforce management.</li>
+                <li><strong>Enhanced User Satisfaction:</strong> Better communication and transparency leading to increased citizen trust and satisfaction with municipal services.</li>
+                <li><strong>Data-Driven Decision Making:</strong> Comprehensive analytics for strategic planning, resource optimization, and continuous service improvement.</li>
+                <li><strong>Environmental Benefits:</strong> More efficient waste collection reducing fuel consumption, emissions, and environmental impact.</li>
+            </ul>
+            
+            <h2 id="23-system-actors">2.3 System Actors</h2>
+            
+            <h3>2.3.1 Citizen (Service Requester)</h3>
+            <p><strong>Role:</strong> End users who require garbage collection services and interact with the system to request and monitor service delivery.</p>
+            
+            <p><strong>Permissions:</strong></p>
+            <ul>
+                <li>Submit garbage pickup requests with photos and GPS coordinates</li>
+                <li>Track request status and view complete service history</li>
+                <li>Submit feedback, complaints, and service ratings</li>
+                <li>Receive notifications about status changes and service updates</li>
+                <li>Manage personal profile and contact information</li>
+            </ul>
+            
+            <p><strong>Actions:</strong> Create requests, monitor progress, provide feedback, report issues, and communicate with service providers.</p>
+            
+            <h3>2.3.2 Worker (Field Personnel)</h3>
+            <p><strong>Role:</strong> Collection personnel responsible for executing pickup tasks in the field and maintaining service quality standards.</p>
+            
+            <p><strong>Permissions:</strong></p>
+            <ul>
+                <li>View assigned tasks and work orders with detailed information</li>
+                <li>Update task status (accept, in-progress, complete)</li>
+                <li>Upload before/after photos as proof of work completion</li>
+                <li>Request task reassignment when unable to complete</li>
+                <li>View personal performance metrics and workload statistics</li>
+            </ul>
+            
+            <p><strong>Actions:</strong> Accept tasks, update status, upload proof, report issues, and maintain communication with administrators.</p>
+            
+            <h3>2.3.3 Administrator (System Manager)</h3>
+            <p><strong>Role:</strong> Municipal authorities responsible for overseeing operations, managing resources, and ensuring service quality standards.</p>
+            
+            <p><strong>Permissions:</strong></p>
+            <ul>
+                <li>Review and approve/reject citizen requests</li>
+                <li>Assign workers to approved requests and manage task distribution</li>
+                <li>Manage user accounts and system permissions</li>
+                <li>Access analytics and performance reports</li>
+                <li>Handle feedback, disputes, and citizen complaints</li>
+                <li>Configure system settings and operational parameters</li>
+            </ul>
+            
+            <p><strong>Actions:</strong> Manage requests, assign workers, monitor system performance, resolve issues, and ensure operational excellence.</p>
+            
+            <h2 id="24-system-modules">2.4 System Modules</h2>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>🔐 Authentication and Authorization Module</h4>
+                    <p><strong>Purpose:</strong> Secure user access with role-based permissions</p>
+                    <ul>
+                        <li>JWT token-based authentication with secure session management</li>
+                        <li>bcrypt password hashing for secure credential storage</li>
+                        <li>Role-based access control (Admin/Worker/Citizen)</li>
+                        <li>Password recovery mechanisms and account security</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>📝 Garbage Report Management Module</h4>
+                    <p><strong>Purpose:</strong> Handle citizen garbage reports through complete lifecycle</p>
+                    <ul>
+                        <li>Photo and GPS-based report submission with validation</li>
+                        <li>Admin review and approval workflow with decision tracking</li>
+                        <li>Status tracking through all stages with timeline visualization</li>
+                        <li>Worker assignment and coordination capabilities</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>📋 Task Assignment and Workflow Module</h4>
+                    <p><strong>Purpose:</strong> Manage worker tasks and field operations</p>
+                    <ul>
+                        <li>Automated task creation from approved reports</li>
+                        <li>Worker assignment based on availability and location</li>
+                        <li>Task status progression tracking with milestone management</li>
+                        <li>Proof of work photo uploads and verification</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>🤖 AI Content Moderation Module</h4>
+                    <p><strong>Purpose:</strong> Analyze and filter user submissions for inappropriate content</p>
+                    <ul>
+                        <li>Real-time content analysis using TensorFlow models</li>
+                        <li>Image scanning for inappropriate content detection</li>
+                        <li>Text analysis for profanity and threats identification</li>
+                        <li>Three-tier severity classification with visual warnings</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>💬 Feedback and Issue Management Module</h4>
+                    <p><strong>Purpose:</strong> Handle citizen feedback and service disputes</p>
+                    <ul>
+                        <li>Structured feedback submission system with categorization</li>
+                        <li>Issue prioritization and escalation workflows</li>
+                        <li>Admin response tracking and resolution management</li>
+                        <li>AI analysis integration for content moderation</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>📊 Analytics and Reporting Module</h4>
+                    <p><strong>Purpose:</strong> Provide insights into system performance</p>
+                    <ul>
+                        <li>Worker performance metrics and productivity analysis</li>
+                        <li>Request resolution statistics and trend analysis</li>
+                        <li>Interactive dashboard with real-time data visualization</li>
+                        <li>Export capabilities for reports and compliance documentation</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>🔔 Notification System Module</h4>
+                    <p><strong>Purpose:</strong> Keep stakeholders informed about status changes</p>
+                    <ul>
+                        <li>Real-time status change notifications with priority levels</li>
+                        <li>Task assignment alerts and deadline reminders</li>
+                        <li>Completion notifications and service confirmations</li>
+                        <li>Role-based notification filtering and management</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>📋 Audit Logging System Module</h4>
+                    <p><strong>Purpose:</strong> Maintain comprehensive activity tracking</p>
+                    <ul>
+                        <li>Automatic logging of all system actions with context</li>
+                        <li>User activity tracking with timestamps and IP addresses</li>
+                        <li>Entity change history for audit and compliance</li>
+                        <li>Security event monitoring and alerting</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h2 id="25-workflow-of-garbage-collection-process">2.5 Workflow of Garbage Collection Process</h2>
+            
+            <h3>2.5.1 Garbage Collection Request Lifecycle</h3>
+            <div class="workflow-diagram">
+┌─────────┐    Submit     ┌─────────────┐    Review     ┌─────────────┐
+│ Citizen │ ─────────────→ │   System    │ ─────────────→ │  Admin      │
+└─────────┘               └─────────────┘               └─────────────┘
+     ↑                           ↓                           ↓
+     │                      Store Request                Approve/
+     │                      with Photos                  Reject
+     │                           ↓                           ↓
+     │                      ┌─────────────┐    Assign     ┌─────────────┐
+     └────────────────────── │ Notification │ ─────────────→ │   Worker    │
+                            └─────────────┘               └─────────────┘
+                                   ↑                           ↓
+                                   │                      Accept Task
+                                   │                           ↓
+                                   │                      ┌─────────────┐
+                                   └────────────────────── │   System    │
+                                                          └─────────────┘
+                                                                 ↓
+                                                        Update Status
+                                                                 ↓
+                                                        ┌─────────────┐
+                                                        │ Completion  │
+                                                        │ Notification│
+                                                        └─────────────┘
+                                                                 ↓
+                                                        ┌─────────────┐
+                                                        │   Citizen    │
+                                                        └─────────────┘
+            </div>
+            
+            <p><strong>Figure: Garbage Collection Request Lifecycle</strong></p>
+            
+            <h3>2.5.2 Detailed Workflow Steps</h3>
+            
+            <ol>
+                <li><strong>Request Submission:</strong> Citizen submits garbage report with photos and GPS location through the web interface. The system validates input data and performs AI content moderation analysis.</li>
+                <li><strong>System Processing:</strong> Request is stored in the database with all metadata, analyzed by AI moderation for inappropriate content, and notification is sent to administrators for review.</li>
+                <li><strong>Admin Review:</strong> Administrator reviews the request, makes approval/rejection decision with notes, and assigns a worker if approved. The system updates request status and notifies relevant stakeholders.</li>
+                <li><strong>Worker Assignment:</strong> Assigned worker receives task notification through the system, reviews task details, and accepts or requests reassignment based on availability and capacity.</li>
+                <li><strong>Task Execution:</strong> Worker updates task status through in-progress to completed, uploads before/after photos as proof, and provides completion notes or reports issues if encountered.</li>
+                <li><strong>Status Notification:</strong> System automatically notifies citizen of request completion with proof photos and service details, closing the request loop and enabling feedback submission.</li>
+                <li><strong>Feedback Loop:</strong> Citizen can provide feedback, rate service quality, or report issues if needed, initiating additional workflows for dispute resolution or service improvement.</li>
+            </ol>
+            
+            <div class="highlight-section">
+                <h3>🔄 Workflow Automation Benefits</h3>
+                <p>The automated workflow provides numerous advantages over manual processes:</p>
+                <ul>
+                    <li><strong>Reduced Processing Time:</strong> Automated notifications and task assignment eliminate manual coordination delays</li>
+                    <li><strong>Improved Accuracy:</strong> System-enforced data validation reduces human error in request processing</li>
+                    <li><strong>Enhanced Transparency:</strong> Real-time status tracking provides visibility to all stakeholders</li>
+                    <li><strong>Better Accountability:</strong> Complete audit trail ensures responsibility tracking for all actions</li>
+                    <li><strong>Scalable Operations:</strong> Automated workflows can handle increased volume without additional administrative overhead</li>
+                </ul>
+            </div>
+            
+            <nav class="top-nav no-print">
+                <a href="introduction.html">← Introduction</a>
+                <a href="system-design.html">System Design →</a>
+            </nav>
+        </div>
+    </div>
+</body>
+</html>
