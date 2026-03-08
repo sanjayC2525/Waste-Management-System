@@ -38,6 +38,9 @@ app.use('/api/notifications', require('./routes/notifications'));
 app.use('/api/analytics', require('./routes/analytics'));
 app.use('/api/audit', require('./routes/audit'));
 
+// Public routes (no authentication required)
+app.use('/api/public', require('./routes/public'));
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);

@@ -125,14 +125,14 @@ class NotificationService {
   // Specific notification creators for different events
   static async notifyReportStatusChange(citizenId, reportId, oldStatus, newStatus) {
     const title = 'Report Status Updated';
-    const message = `Your garbage report #${reportId} status changed from ${oldStatus} to ${newStatus}`;
+    const message = `Your waste report #${reportId} status changed from ${oldStatus} to ${newStatus}`;
     
     return this.createNotification(citizenId, title, message, 'INFO', 'REPORT', reportId);
   }
 
   static async notifyTaskAssigned(workerId, taskId, reportId) {
     const title = 'New Task Assigned';
-    const message = `You have been assigned a new task #${taskId} for garbage report #${reportId}`;
+    const message = `You have been assigned a new task #${taskId} for waste report #${reportId}`;
     
     return this.createNotification(workerId, title, message, 'INFO', 'TASK', taskId);
   }
@@ -165,7 +165,7 @@ class NotificationService {
 
   static async notifyTaskCompleted(citizenId, taskId, workerName) {
     const title = 'Task Completed';
-    const message = `Your garbage report task has been completed by ${workerName}`;
+    const message = `Your waste report task has been completed by ${workerName}`;
     
     return this.createNotification(citizenId, title, message, 'SUCCESS', 'TASK', taskId);
   }
