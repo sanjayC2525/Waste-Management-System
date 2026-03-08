@@ -70,6 +70,7 @@ model GarbageReport {
   tasks   Task[]
   assignedWorker User? @relation("WorkerAssignments", fields: [assignedWorkerId], references: [id])
   issues  Issue[] @relation("ReportIssues")
+  feedback Feedback[] @relation("FeedbackReports")
 }
 
 model Task {
@@ -125,6 +126,7 @@ model Feedback {
   citizenId   Int
   adminId     Int?     // Admin assigned to handle
   workerId    Int?     // Related worker if applicable
+  garbageReportId Int? // Related garbage report if applicable
   adminReply  String?  // Admin reply to citizen
   adminNotes  String?  // Admin internal notes
   replied     Boolean  @default(false) // Track if admin has replied
@@ -141,6 +143,7 @@ model Feedback {
   citizen User @relation("CitizenFeedback", fields: [citizenId], references: [id])
   admin   User? @relation("AdminFeedback", fields: [adminId], references: [id])
   worker  Worker? @relation("FeedbackWorker", fields: [workerId], references: [id])
+  garbageReport GarbageReport? @relation("FeedbackReports", fields: [garbageReportId], references: [id])
 }
 
 model Issue {

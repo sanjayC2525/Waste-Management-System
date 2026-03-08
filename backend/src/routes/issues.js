@@ -13,7 +13,7 @@ router.post('/issues-feedback', authenticateToken, authorizeRoles('Citizen'), as
       return res.status(401).json({ error: 'User not authenticated' });
     }
 
-    const { type, title, description, category, priority, workerId, aiAnalysis } = req.body;
+    const { type, title, description, category, priority, workerId, garbageReportId, aiAnalysis } = req.body;
     console.log('Issues-Feedback submission:', { 
       userId: req.user.id, 
       type, 
@@ -22,6 +22,7 @@ router.post('/issues-feedback', authenticateToken, authorizeRoles('Citizen'), as
       category, 
       priority, 
       hasWorkerId: !!workerId,
+      hasGarbageReportId: !!garbageReportId,
       hasAI: !!aiAnalysis
     });
 
@@ -58,6 +59,20 @@ router.post('/issues-feedback', authenticateToken, authorizeRoles('Citizen'), as
         }
       }
 
+      // Validate garbageReportId if provided
+      if (garbageReportId) {
+        const garbageReport = await prisma.garbageReport.findUnique({
+          where: { id: parseInt(garbageReportId) },
+        });
+        if (!garbageReport) {
+          return res.status(400).json({ error: 'Invalid garbage report ID' });
+        }
+        // Ensure the garbage report belongs to the current citizen
+        if (garbageReport.citizenId !== req.user.id) {
+          return res.status(403).json({ error: 'You can only reference your own garbage reports' });
+        }
+      }
+
       const issue = await prisma.issue.create({
         data: {
           type,
@@ -67,6 +82,7 @@ router.post('/issues-feedback', authenticateToken, authorizeRoles('Citizen'), as
           priority: priority || 'MEDIUM',
           citizenId: req.user.id,
           workerId: workerId ? parseInt(workerId) : null,
+          garbageReportId: garbageReportId ? parseInt(garbageReportId) : null,
         },
         include: {
           citizen: { select: { name: true, email: true } },
@@ -88,6 +104,30 @@ router.post('/issues-feedback', authenticateToken, authorizeRoles('Citizen'), as
         return res.status(400).json({ error: 'Invalid category' });
       }
 
+      // Validate workerId if provided
+      if (workerId) {
+        const worker = await prisma.user.findUnique({
+          where: { id: parseInt(workerId) },
+        });
+        if (!worker || worker.role !== 'Worker') {
+          return res.status(400).json({ error: 'Invalid worker ID' });
+        }
+      }
+
+      // Validate garbageReportId if provided
+      if (garbageReportId) {
+        const garbageReport = await prisma.garbageReport.findUnique({
+          where: { id: parseInt(garbageReportId) },
+        });
+        if (!garbageReport) {
+          return res.status(400).json({ error: 'Invalid garbage report ID' });
+        }
+        // Ensure the garbage report belongs to the current citizen
+        if (garbageReport.citizenId !== req.user.id) {
+          return res.status(403).json({ error: 'You can only reference your own garbage reports' });
+        }
+      }
+
       const feedback = await prisma.feedback.create({
         data: {
           type,
@@ -97,6 +137,7 @@ router.post('/issues-feedback', authenticateToken, authorizeRoles('Citizen'), as
           priority: priority || 'MEDIUM',
           citizenId: req.user.id,
           workerId: workerId ? parseInt(workerId) : null,
+          garbageReportId: garbageReportId ? parseInt(garbageReportId) : null,
           // Handle AI analysis if provided
           ...(aiAnalysis && {
             aiAnalysis: JSON.stringify(aiAnalysis),
