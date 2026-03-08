@@ -14,16 +14,16 @@ class AIContentModeration {
     if (this.isLoaded || this.isLoading) return;
     
     this.isLoading = true;
-    console.log('🤖 Loading AI Content Moderation...');
+    console.log(' Loading AI Content Moderation...');
     
     try {
       // Try to load TensorFlow.js toxicity model
       const toxicity = await import('@tensorflow-models/toxicity');
       this.model = await toxicity.load(0.7); // 70% confidence threshold
       this.isLoaded = true;
-      console.log('✅ AI Content Moderation loaded successfully');
+      console.log(' AI Content Moderation loaded successfully');
     } catch (error) {
-      console.warn('⚠️ AI model failed to load, using fallback:', error.message);
+      console.warn(' AI model failed to load, using fallback:', error.message);
       this.fallbackEnabled = true;
     } finally {
       this.isLoading = false;
@@ -132,9 +132,9 @@ class AIContentModeration {
   getWarningMessage(analysis) {
     const messages = {
       safe: '',
-      mild: '⚠️ Your feedback contains some strong language. Please consider rephrasing.',
-      moderate: '⚠️ Your feedback contains concerning language. It will be reviewed by admin.',
-      severe: '🚨 Your feedback contains inappropriate content. It will be reviewed and may be removed.'
+      mild: ' Your feedback contains some strong language. Please consider rephrasing.',
+      moderate: ' Your feedback contains concerning language. It will be reviewed by admin.',
+      severe: ' Your feedback contains inappropriate content. It will be reviewed and may be removed.'
     };
 
     return messages[analysis.severity] || '';
