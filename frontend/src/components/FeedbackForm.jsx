@@ -1,7 +1,10 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
+import { analyzeContent } from '../utils/contentModeration';
 
-const FeedbackForm = ({ onSubmit, onCancel, workers = [], showTypeSelector = false }) => {
+const FeedbackForm = ({ onSubmit, onCancel, workers = [], showTypeSelector = false, garbageReports = [] }) => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     type: showTypeSelector ? 'FEEDBACK' : 'COMPLAINT',
     title: '',
@@ -9,16 +12,17 @@ const FeedbackForm = ({ onSubmit, onCancel, workers = [], showTypeSelector = fal
     category: 'GENERAL',
     priority: 'MEDIUM',
     workerId: '',
+    garbageReportId: '',
   });
   const [loading, setLoading] = useState(false);
   const [aiAnalysis, setAiAnalysis] = useState(null);
 
   // Simple AI analysis that won't break the component
   const analyzeContent = (text) => {
-    console.log('🤖 Analyzing content:', text);
+    console.log(' Analyzing content:', text);
     
     if (!text || text.trim().length === 0) {
-      console.log('🤖 No content to analyze');
+      console.log(' No content to analyze');
       return null;
     }
 
@@ -40,7 +44,7 @@ const FeedbackForm = ({ onSubmit, onCancel, workers = [], showTypeSelector = fal
       if (matches > 0) {
         foundCategories.push(category);
         totalMatches += matches;
-        console.log(`🤖 Found ${category}: ${matches} matches`);
+        console.log(` Found ${category}: ${matches} matches`);
       }
     });
 
@@ -56,11 +60,11 @@ const FeedbackForm = ({ onSubmit, onCancel, workers = [], showTypeSelector = fal
     if (angryMatches > 0) {
       foundCategories.push('anger');
       totalMatches += angryMatches;
-      console.log(`🤖 Found anger: ${angryMatches} matches`);
+      console.log(` Found anger: ${angryMatches} matches`);
     }
 
     if (foundCategories.length === 0) {
-      console.log('🤖 No harmful content detected');
+      console.log(' No harmful content detected');
       return null;
     }
 
@@ -84,7 +88,7 @@ const FeedbackForm = ({ onSubmit, onCancel, workers = [], showTypeSelector = fal
       method: 'simple'
     };
 
-    console.log('🤖 Analysis result:', analysis);
+    console.log(' Analysis result:', analysis);
     return analysis;
   };
 
@@ -93,7 +97,7 @@ const FeedbackForm = ({ onSubmit, onCancel, workers = [], showTypeSelector = fal
     const timeoutId = setTimeout(() => {
       const fullText = `${formData.title} ${formData.description}`;
       const analysis = analyzeContent(fullText);
-      console.log('🤖 Setting AI analysis state:', analysis);
+      console.log(' Setting AI analysis state:', analysis);
       setAiAnalysis(analysis);
     }, 500); // 500ms debounce
 
@@ -130,7 +134,9 @@ const FeedbackForm = ({ onSubmit, onCancel, workers = [], showTypeSelector = fal
   }, [formData.type]);
 
   const handleSubmit = async (e) => {
+    console.log('FeedbackForm handleSubmit called - event type:', e.type);
     e.preventDefault();
+    console.log('FeedbackForm: preventDefault called');
     
     if (!formData.title.trim() || !formData.description.trim()) {
       toast.error('Title and description are required');
@@ -145,6 +151,7 @@ const FeedbackForm = ({ onSubmit, onCancel, workers = [], showTypeSelector = fal
 
     setLoading(true);
     try {
+      console.log('FeedbackForm: About to call onSubmit with data:', formData);
       // Include AI analysis in the submission data
       const submissionData = {
         ...formData,
@@ -157,8 +164,9 @@ const FeedbackForm = ({ onSubmit, onCancel, workers = [], showTypeSelector = fal
         } : null
       };
       
-      console.log('Submitting feedback with AI analysis:', submissionData);
+      console.log('FeedbackForm: Submitting feedback with AI analysis:', submissionData);
       await onSubmit(submissionData);
+      console.log('FeedbackForm: onSubmit completed successfully');
       // Success toast handled by parent component
       setFormData({
         type: showTypeSelector ? 'FEEDBACK' : 'COMPLAINT',
@@ -167,14 +175,16 @@ const FeedbackForm = ({ onSubmit, onCancel, workers = [], showTypeSelector = fal
         category: 'GENERAL',
         priority: 'MEDIUM',
         workerId: '',
+        garbageReportId: '',
       });
       setAiAnalysis(null);
     } catch (error) {
-      console.error('Submit error:', error);
+      console.error('FeedbackForm: Submit error:', error);
       const errorMessage = error.response?.data?.error || error.response?.data?.message || error.message || 'Failed to submit feedback. Please try again.';
       toast.error(`Submission failed: ${errorMessage}`);
     } finally {
       setLoading(false);
+      console.log('FeedbackForm: handleSubmit finished');
     }
   };
 
@@ -198,7 +208,7 @@ const FeedbackForm = ({ onSubmit, onCancel, workers = [], showTypeSelector = fal
         }`}>
           <div className="flex items-start space-x-2">
             <span className="text-lg">
-              {aiAnalysis.severity === 'severe' ? '🚨' : '⚠️'}
+              {aiAnalysis.severity === 'severe' ? '' : ''}
             </span>
             <div className="flex-1">
               <p className="font-medium">
@@ -215,21 +225,21 @@ const FeedbackForm = ({ onSubmit, onCancel, workers = [], showTypeSelector = fal
         </div>
       )}
       
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4" id="feedback-form">
         {showTypeSelector && (
           <div>
-            <label className="block text-sm font-medium mb-2 text-text-primary">Type</label>
+            <label className="block text-sm font-medium mb-2 text-text-primary">{t('feedback.feedbackType')}</label>
             <select
               name="type"
               value={formData.type}
               onChange={handleChange}
               className="w-full px-3 py-2 bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary text-text-primary"
             >
-              <option value="FEEDBACK">Feedback</option>
-              <option value="COMPLAINT">Complaint</option>
-              <option value="SUGGESTION">Suggestion</option>
-              <option value="ISSUE">Issue</option>
-              <option value="COMPLIMENT">Compliment</option>
+              <option value="FEEDBACK">{t('feedback.feedback')}</option>
+              <option value="COMPLAINT">{t('feedback.complaint')}</option>
+              <option value="SUGGESTION">{t('feedback.suggestion')}</option>
+              <option value="ISSUE">{t('feedback.issue')}</option>
+              <option value="COMPLIMENT">{t('feedback.compliment')}</option>
             </select>
           </div>
         )}
@@ -250,54 +260,54 @@ const FeedbackForm = ({ onSubmit, onCancel, workers = [], showTypeSelector = fal
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium mb-2 text-text-primary">Priority</label>
+            <label className="block text-sm font-medium mb-2 text-text-primary">{t('common.priority')}</label>
             <select
               name="priority"
               value={formData.priority}
               onChange={handleChange}
               className="w-full px-3 py-2 bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary text-text-primary"
             >
-              <option value="LOW">Low</option>
-              <option value="MEDIUM">Medium</option>
-              <option value="HIGH">High</option>
-              <option value="URGENT">Urgent</option>
+              <option value="LOW">{t('common.priority')} - Low</option>
+              <option value="MEDIUM">{t('common.priority')} - Medium</option>
+              <option value="HIGH">{t('common.priority')} - High</option>
+              <option value="URGENT">{t('common.priority')} - Urgent</option>
             </select>
           </div>
         </div>
         <div>
-          <label className="block text-sm font-medium mb-2 text-text-primary">Title</label>
+          <label className="block text-sm font-medium mb-2 text-text-primary">{t('common.title')}</label>
           <input
             type="text"
             name="title"
             value={formData.title}
             onChange={handleChange}
-            placeholder="Enter title"
             className="w-full px-3 py-2 bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary text-text-primary"
+            placeholder={t('common.title')}
             required
           />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-2 text-text-primary">Description</label>
+          <label className="block text-sm font-medium mb-2 text-text-primary">{t('common.description')}</label>
           <textarea
             name="description"
             value={formData.description}
             onChange={handleChange}
-            placeholder="Describe your feedback in detail"
-            rows={4}
-            className="w-full px-3 py-2 bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary text-text-primary resize-none"
+            className="w-full px-3 py-2 bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary text-text-primary"
+            placeholder={t('common.description')}
+            rows="4"
             required
           />
         </div>
         {workers.length > 0 && (
           <div>
-            <label className="block text-sm font-medium mb-2 text-text-primary">Related Worker (Optional)</label>
+            <label className="block text-sm font-medium mb-2 text-text-primary">{t('feedback.relatedWorker')}</label>
             <select
               name="workerId"
               value={formData.workerId}
               onChange={handleChange}
               className="w-full px-3 py-2 bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary text-text-primary"
             >
-              <option value="">Select a worker...</option>
+              <option value="">{t('feedback.selectWorker')}</option>
               {workers.map(worker => (
                 <option key={worker.id} value={worker.id}>
                   {worker.name} ({worker.email})
@@ -306,20 +316,45 @@ const FeedbackForm = ({ onSubmit, onCancel, workers = [], showTypeSelector = fal
             </select>
           </div>
         )}
+        {garbageReports.length > 0 ? (
+          <div>
+            <label className="block text-sm font-medium mb-2 text-text-primary">{t('feedback.relatedGarbageReport')}</label>
+            <select
+              name="garbageReportId"
+              value={formData.garbageReportId}
+              onChange={handleChange}
+              className="w-full px-3 py-2 bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary text-text-primary"
+            >
+              <option value="">{t('feedback.selectGarbageReport')}</option>
+              {garbageReports.map(report => (
+                <option key={report.id} value={report.id}>
+                  Report #{report.id} - {new Date(report.createdAt).toLocaleDateString()} {new Date(report.createdAt).toLocaleTimeString()} - {report.status}
+                </option>
+              ))}
+            </select>
+          </div>
+        ) : (
+          <div>
+            <label className="block text-sm font-medium mb-2 text-text-primary">{t('feedback.relatedGarbageReport')}</label>
+            <div className="w-full px-3 py-2 bg-surface border border-border rounded-md text-text-muted text-sm">
+              {t('feedback.noGarbageReportsAvailable')}
+            </div>
+          </div>
+        )}
         <div className="flex justify-end space-x-3 pt-4">
           <button
             type="button"
             onClick={onCancel}
             className="px-4 py-2 bg-surfaceLight hover:bg-surface text-text-primary font-medium rounded-md transition duration-200"
           >
-            Cancel
+            {t('common.cancel')}
           </button>
           <button
             type="submit"
             disabled={loading || (aiAnalysis && aiAnalysis.severity === 'severe')}
             className="px-4 py-2 bg-status-success hover:bg-status-success/90 text-white font-medium rounded-md transition duration-200 disabled:opacity-50"
           >
-            {loading ? 'Submitting...' : 'Submit Feedback'}
+            {loading ? t('common.loading') : t('feedback.submitFeedback')}
           </button>
         </div>
       </form>

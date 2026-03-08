@@ -165,25 +165,25 @@ const WorkerPerformanceMetrics = ({ workerId }) => {
             )}
             {parseFloat(metrics.avgCompletionTime) < 2 && (
               <div className="flex items-center text-status-info text-sm">
-                <span className="mr-2">⚡</span>
+                <span className="mr-2"></span>
                 <span>Fast completion times</span>
               </div>
             )}
             {metrics.unable === 0 && metrics.totalTasks > 5 && (
               <div className="flex items-center text-status-success text-sm">
-                <span className="mr-2">✅</span>
+                <span className="mr-2"></span>
                 <span>Perfect task completion record</span>
               </div>
             )}
             {parseFloat(metrics.efficiency) < 60 && (
               <div className="flex items-center text-status-warning text-sm">
-                <span className="mr-2">📈</span>
+                <span className="mr-2"></span>
                 <span>Consider reviewing task assignments</span>
               </div>
             )}
             {metrics.unable > metrics.completed && (
               <div className="flex items-center text-status-error text-sm">
-                <span className="mr-2">⚠️</span>
+                <span className="mr-2"></span>
                 <span>High unable rate - review workload</span>
               </div>
             )}

@@ -4,13 +4,13 @@ export const STATUS_CONFIG = {
     label: 'Reported',
     color: 'bg-status-warning/10 text-status-warning border border-status-warning/20',
     textColor: 'text-status-warning',
-    icon: '📝'
+    icon: ''
   },
   APPROVED: {
     label: 'Approved',
     color: 'bg-status-success/10 text-status-success border border-status-success/20',
     textColor: 'text-status-success',
-    icon: '✅'
+    icon: ''
   },
   ASSIGNED: {
     label: 'Assigned',
@@ -22,25 +22,25 @@ export const STATUS_CONFIG = {
     label: 'In Progress',
     color: 'bg-status-info/10 text-status-info border border-status-info/20',
     textColor: 'text-status-info',
-    icon: '🔄'
+    icon: ''
   },
   WORK_BEING_REASSIGNED: {
     label: 'Work Being Re-Assigned',
     color: 'bg-status-warning/10 text-status-warning border border-status-warning/20',
     textColor: 'text-status-warning',
-    icon: '🔄'
+    icon: ''
   },
   COMPLETED: {
     label: 'Completed',
     color: 'bg-status-success text-text-inverse',
     textColor: 'text-text-inverse',
-    icon: '✅'
+    icon: ''
   },
   REJECTED: {
     label: 'Rejected',
     color: 'bg-status-error/10 text-status-error border border-status-error/20',
     textColor: 'text-status-error',
-    icon: '❌'
+    icon: ''
   },
   PENDING: {
     label: 'Pending',
@@ -52,18 +52,18 @@ export const STATUS_CONFIG = {
     label: 'Collected',
     color: 'bg-status-success text-text-inverse',
     textColor: 'text-text-inverse',
-    icon: '✅'
+    icon: ''
   }
 };
 
 // Garbage type icons with consistent styling
 export const GARBAGE_TYPE_ICONS = {
-  'dry': '📦',
-  'wet': '💧',
+  'dry': '',
+  'wet': '',
   'e-waste': '�',
-  'hazardous': '⚠️',
-  'organic': '🌿',
-  'recyclable': '♻️',
+  'hazardous': '',
+  'organic': '',
+  'recyclable': '',
   'mixed': '�️'
 };
 
@@ -110,7 +110,7 @@ export const formatTimelineEntry = (entry) => {
   return (
     <div className="flex items-start space-x-3 p-3 rounded-xl bg-surface border-border">
       <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
-        <span className="text-primary text-sm font-medium">{STATUS_CONFIG[entry.status]?.icon || '📋'}</span>
+        <span className="text-primary text-sm font-medium">{STATUS_CONFIG[entry.status]?.icon || ''}</span>
       </div>
       <div className="flex-1 min-w-0">
         <div className="text-text-primary font-medium">{entry.status}</div>

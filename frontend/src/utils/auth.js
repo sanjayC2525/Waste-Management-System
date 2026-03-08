@@ -69,6 +69,9 @@ axios.interceptors.request.use(
     const token = getToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+      console.log('Auth interceptor: Adding token to request:', config.method?.toUpperCase(), config.url);
+    } else {
+      console.log('Auth interceptor: No token available for request:', config.method?.toUpperCase(), config.url);
     }
     return config;
   },
@@ -83,8 +86,12 @@ axios.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       // Token expired or invalid - logout user
+      console.log('Auth interceptor: 401 error detected, logging out');
       logout();
-      window.location.href = '/login';
+      // Only redirect if we're not already on login page
+      if (window.location.pathname !== '/') {
+        window.location.href = '/';
+      }
     }
     return Promise.reject(error);
   }

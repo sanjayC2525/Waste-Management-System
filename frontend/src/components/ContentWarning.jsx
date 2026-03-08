@@ -54,9 +54,9 @@ const ContentWarning = ({
   const getWarningIcon = () => {
     if (!analysis) return '';
     switch (analysis.severity) {
-      case 'mild': return '⚠️';
-      case 'moderate': return '⚠️';
-      case 'severe': return '🚨';
+      case 'mild': return '';
+      case 'moderate': return '';
+      case 'severe': return '';
       default: return '';
     }
   };

@@ -79,9 +79,9 @@ const NotificationCenter = ({ userId }) => {
 
   const getTypeIcon = (type) => {
     switch (type) {
-      case 'SUCCESS': return '✅';
-      case 'WARNING': return '⚠️';
-      case 'ERROR': return '❌';
+      case 'SUCCESS': return '';
+      case 'WARNING': return '';
+      case 'ERROR': return '';
       default: return 'ℹ️';
     }
   };

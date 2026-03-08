@@ -66,7 +66,7 @@ const ReportDetailModal = ({
     return (
       <Modal isOpen={isOpen} onClose={onClose} size="md" title="Report Details">
         <div className="p-6 text-center">
-          <div className="text-4xl mb-4">📋</div>
+          <div className="text-4xl mb-4"></div>
           <h3 className="text-lg font-semibold text-text-primary mb-2">Report Not Found</h3>
           <p className="text-text-muted mb-4">The report data could not be loaded.</p>
           <Button onClick={onClose} variant="secondary">
@@ -106,9 +106,9 @@ const ReportDetailModal = ({
                   : 'text-text-muted border-transparent hover:text-text-primary hover:border-border'
               }`}
             >
-              {tab === 'details' && '📋 Details'}
-              {tab === 'timeline' && '📅 Timeline'}
-              {tab === 'actions' && '⚡ Actions'}
+              {tab === 'details' && ' Details'}
+              {tab === 'timeline' && ' Timeline'}
+              {tab === 'actions' && ' Actions'}
             </button>
           ))}
         </div>
@@ -118,7 +118,7 @@ const ReportDetailModal = ({
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Report Info */}
             <Card className="space-y-4">
-              <h3 className="text-lg font-semibold text-text-primary mb-4">📋 Report Information</h3>
+              <h3 className="text-lg font-semibold text-text-primary mb-4"> Report Information</h3>
               
               <div className="space-y-3">
                 <div className="flex justify-between">
@@ -169,14 +169,51 @@ const ReportDetailModal = ({
 
             {/* Location Info */}
             <Card className="space-y-4">
-              <h3 className="text-lg font-semibold text-text-primary mb-4">📍 Location Details</h3>
+              <h3 className="text-lg font-semibold text-text-primary mb-4 flex items-center">
+                <svg className="w-5 h-5 mr-2 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+                Location Details
+              </h3>
               
               <div className="space-y-3">
-                <div className="flex justify-between">
-                  <span className="text-text-muted">Coordinates:</span>
-                  <span className="text-text-primary font-mono">
-                    {reportLatitude.toFixed(6)}, {reportLongitude.toFixed(6)}
-                  </span>
+                {reportAddress && (
+                  <div className="flex items-start space-x-3">
+                    <svg className="w-4 h-4 mt-1 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                    </svg>
+                    <div>
+                      <span className="text-text-muted text-sm">Address:</span>
+                      <div className="text-text-primary">{reportAddress}</div>
+                    </div>
+                  </div>
+                )}
+                
+                <div className="flex items-start space-x-3">
+                  <svg className="w-4 h-4 mt-1 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                  </svg>
+                  <div>
+                    <span className="text-text-muted text-sm">GPS Coordinates:</span>
+                    <div className="text-text-primary font-mono">
+                      {reportLatitude.toFixed(6)}, {reportLongitude.toFixed(6)}
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="pt-2 border-t border-gray-200">
+                  <a
+                    href={`https://www.google.com/maps?q=${reportLatitude},${reportLongitude}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center space-x-2 text-primary hover:text-primary/80 transition-colors text-sm"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                    </svg>
+                    <span>View in Google Maps</span>
+                  </a>
                 </div>
               </div>
             </Card>
@@ -186,7 +223,7 @@ const ReportDetailModal = ({
         {/* Timeline Tab */}
         {activeTab === 'timeline' && (
           <Card>
-            <h3 className="text-lg font-semibold text-text-primary mb-4">📅 Status Timeline</h3>
+            <h3 className="text-lg font-semibold text-text-primary mb-4"> Status Timeline</h3>
             
             <div className="space-y-3">
               {statusHistory.length > 0 ? (
@@ -207,7 +244,7 @@ const ReportDetailModal = ({
         {/* Actions Tab */}
         {activeTab === 'actions' && (
           <Card>
-            <h3 className="text-lg font-semibold text-text-primary mb-4">⚡ Admin Actions</h3>
+            <h3 className="text-lg font-semibold text-text-primary mb-4"> Admin Actions</h3>
             
             <div className="space-y-4">
               {/* Status Display */}
@@ -255,7 +292,7 @@ const ReportDetailModal = ({
                       className="flex-1"
                       disabled={rejecting}
                     >
-                      {rejecting ? 'Rejecting...' : '❌ Reject Request'}
+                      {rejecting ? 'Rejecting...' : ' Reject Request'}
                     </Button>
                     
                     <Button
@@ -264,7 +301,7 @@ const ReportDetailModal = ({
                       className="flex-1"
                       disabled={loading}
                     >
-                      {loading ? 'Processing...' : selectedWorker ? `✅ Assign to ${selectedWorkerName}` : 'Select Worker First'}
+                      {loading ? 'Processing...' : selectedWorker ? ` Assign to ${selectedWorkerName}` : 'Select Worker First'}
                     </Button>
                   </div>
                 </div>
@@ -280,7 +317,7 @@ const ReportDetailModal = ({
                   <p className={`font-medium ${
                     reportStatus === 'COMPLETED' ? 'text-status-success' : 'text-status-error'
                   }`}>
-                    {reportStatus === 'COMPLETED' ? '✅ This request has been completed' : '❌ This request was rejected'}
+                    {reportStatus === 'COMPLETED' ? ' This request has been completed' : ' This request was rejected'}
                   </p>
                   {report.adminNotes && (
                     <p className="text-sm text-text-muted mt-2">

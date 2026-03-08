@@ -345,7 +345,7 @@ const FeedbackManagement = () => {
                     <td className="px-6 py-4 text-sm text-text-primary">
                       <div>
                         <div className="font-medium">
-                          {item.source === 'feedback' ? '📝' : '⚠️'} {item.title}
+                          {item.source === 'feedback' ? '' : ''} {item.title}
                         </div>
                         <div className="text-text-muted truncate max-w-xs">{item.description}</div>
                         <div className="text-xs text-text-muted mt-1">

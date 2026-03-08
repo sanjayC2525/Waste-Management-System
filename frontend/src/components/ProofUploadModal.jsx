@@ -93,15 +93,42 @@ const ProofUploadModal = ({ task, isOpen, onClose, onUploadSuccess }) => {
 
         {/* Task Info */}
         <div className="bg-surfaceLight p-3 rounded-md mb-4 border border-border">
-          <p className="text-sm text-text-secondary">
+          <p className="text-sm text-text-secondary mb-2">
             <strong className="text-text-primary">Task ID:</strong> #{task.id}
           </p>
-          <p className="text-sm text-text-secondary">
-            <strong className="text-text-primary">Location:</strong> {task.latitude.toFixed(4)}, {task.longitude.toFixed(4)}
-          </p>
-          <p className="text-sm text-text-secondary">
-            <strong className="text-text-primary">Status:</strong> {task.status}
-          </p>
+          <div className="space-y-1">
+            <p className="text-sm text-text-secondary flex items-center">
+              <svg className="w-4 h-4 mr-2 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+              </svg>
+              <strong className="text-text-primary">Location:</strong> 
+              <span className="font-mono ml-1">{task.latitude?.toFixed(4)}, {task.longitude?.toFixed(4)}</span>
+            </p>
+            {task.garbageReport?.address && (
+              <p className="text-sm text-text-secondary flex items-center">
+                <svg className="w-4 h-4 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                </svg>
+                <strong className="text-text-primary">Address:</strong> 
+                <span className="ml-1">{task.garbageReport.address}</span>
+              </p>
+            )}
+            <p className="text-sm text-text-secondary">
+              <strong className="text-text-primary">Status:</strong> {task.status}
+            </p>
+          </div>
+          <a
+            href={`https://www.google.com/maps?q=${task.latitude},${task.longitude}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary hover:text-primary/80 text-xs flex items-center mt-2"
+          >
+            <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+            </svg>
+            View Location on Google Maps
+          </a>
         </div>
 
         {/* Actions */}

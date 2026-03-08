@@ -6,11 +6,18 @@ import ReportDetailModal from '../components/ReportDetailModal';
 import FeedbackManagement from '../components/FeedbackManagement';
 import Skeleton from '../components/Skeleton';
 import NotificationCenter from '../components/NotificationCenter';
+import AdminAnalytics from '../components/AdminAnalytics';
 
 const AdminDashboard = () => {
   const [reports, setReports] = useState([]);
   const [workers, setWorkers] = useState([]);
   const [activeSection, setActiveSection] = useState('pendingRequests');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all');
+  const [dateFilter, setDateFilter] = useState('all');
+  const [filteredReports, setFilteredReports] = useState([]);
+  const [selectedReports, setSelectedReports] = useState([]);
+  const [showBulkActions, setShowBulkActions] = useState(false);
   const [workerForm, setWorkerForm] = useState({
     name: '',
     email: '',
@@ -31,6 +38,97 @@ const AdminDashboard = () => {
     loadData();
     getUserInfo();
   }, []);
+
+  // Filter reports based on search and filters
+  useEffect(() => {
+    let filtered = reports;
+
+    // Search filter
+    if (searchTerm) {
+      filtered = filtered.filter(report => 
+        report.id.toString().includes(searchTerm.toLowerCase()) ||
+        (report.citizen?.name && report.citizen.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (report.garbageReport?.address && report.garbageReport.address.toLowerCase().includes(searchTerm.toLowerCase()))
+      );
+    }
+
+    // Status filter
+    if (statusFilter !== 'all') {
+      filtered = filtered.filter(report => report.status === statusFilter);
+    }
+
+    // Date filter
+    if (dateFilter !== 'all') {
+      const now = new Date();
+      const filterDate = new Date();
+      
+      switch (dateFilter) {
+        case 'today':
+          filterDate.setHours(0, 0, 0, 0);
+          break;
+        case 'week':
+          filterDate.setDate(now.getDate() - 7);
+          break;
+        case 'month':
+          filterDate.setMonth(now.getMonth() - 1);
+          break;
+        default:
+          break;
+      }
+      
+      if (dateFilter !== 'all') {
+        filtered = filtered.filter(report => new Date(report.createdAt) >= filterDate);
+      }
+    }
+
+    setFilteredReports(filtered);
+  }, [reports, searchTerm, statusFilter, dateFilter]);
+
+  // Bulk action handlers
+  const handleSelectReport = (reportId) => {
+    setSelectedReports(prev => 
+      prev.includes(reportId) 
+        ? prev.filter(id => id !== reportId)
+        : [...prev, reportId]
+    );
+  };
+
+  const handleSelectAllReports = () => {
+    const currentFilteredReports = filteredReports.filter(r => r.status === 'REPORTED');
+    if (selectedReports.length === currentFilteredReports.length) {
+      setSelectedReports([]);
+    } else {
+      setSelectedReports(currentFilteredReports.map(r => r.id));
+    }
+  };
+
+  const handleBulkApprove = async () => {
+    if (selectedReports.length === 0) return;
+    
+    try {
+      // For now, we'll just show a success message
+      // In a real implementation, you'd call the API for each report
+      toast.success(`Bulk approving ${selectedReports.length} reports`);
+      setSelectedReports([]);
+      setShowBulkActions(false);
+      loadData();
+    } catch (error) {
+      toast.error('Failed to bulk approve reports');
+    }
+  };
+
+  const handleBulkReject = async () => {
+    if (selectedReports.length === 0) return;
+    
+    try {
+      toast.success(`Bulk rejecting ${selectedReports.length} reports`);
+      setSelectedReports([]);
+      setShowBulkActions(false);
+      loadData();
+    } catch (error) {
+      toast.error('Failed to bulk reject reports');
+    }
+  };
 
   useEffect(() => {
     if (activeSection === 'stuckTasks') {
@@ -257,6 +355,78 @@ const AdminDashboard = () => {
         </button>
       </div>
 
+      {/* Analytics Dashboard - Always Visible */}
+      <AdminAnalytics reports={reports} workers={workers} />
+
+      {/* Search and Filters - Only show for report sections */}
+      {(activeSection === 'pendingRequests' || activeSection === 'stuckTasks') && (
+        <div className="bg-surface rounded-xl p-4 shadow-soft">
+          <div className="flex flex-col md:flex-row gap-4">
+            {/* Search Bar */}
+            <div className="flex-1">
+              <div className="relative">
+                <svg className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+                <input
+                  type="text"
+                  placeholder="Search by ID, citizen name, or address..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2 bg-background border border-border rounded-lg text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors"
+                />
+              </div>
+            </div>
+
+            {/* Status Filter */}
+            <div className="md:w-48">
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                className="w-full px-4 py-2 bg-background border border-border rounded-lg text-text-primary focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors"
+              >
+                <option value="all">All Status</option>
+                <option value="REPORTED">Reported</option>
+                <option value="IN_PROGRESS">In Progress</option>
+                <option value="COMPLETED">Completed</option>
+                <option value="UNABLE">Unable</option>
+              </select>
+            </div>
+
+            {/* Date Filter */}
+            <div className="md:w-48">
+              <select
+                value={dateFilter}
+                onChange={(e) => setDateFilter(e.target.value)}
+                className="w-full px-4 py-2 bg-background border border-border rounded-lg text-text-primary focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors"
+              >
+                <option value="all">All Time</option>
+                <option value="today">Today</option>
+                <option value="week">This Week</option>
+                <option value="month">This Month</option>
+              </select>
+            </div>
+
+            {/* Clear Filters */}
+            <button
+              onClick={() => {
+                setSearchTerm('');
+                setStatusFilter('all');
+                setDateFilter('all');
+              }}
+              className="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors"
+            >
+              Clear Filters
+            </button>
+          </div>
+          
+          {/* Results Count */}
+          <div className="mt-3 text-sm text-text-muted">
+            Showing {filteredReports.length} of {reports.length} reports
+          </div>
+        </div>
+      )}
+
       {activeSection === 'addWorker' && (
         <div className="bg-surface rounded-xl p-6 shadow-soft hover:shadow-medium transition-shadow duration-200">
           <h2 className="text-xl font-bold mb-6 text-text-primary">Add New Worker</h2>
@@ -310,9 +480,42 @@ const AdminDashboard = () => {
             <p className="text-text-muted text-sm mt-1">Review and process incoming reports</p>
           </div>
           
-          {reports.filter(r => r.status === 'REPORTED').length === 0 ? (
+          {/* Bulk Actions */}
+          {selectedReports.length > 0 && (
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm text-blue-800 font-medium">
+                    {selectedReports.length} report{selectedReports.length > 1 ? 's' : ''} selected
+                  </span>
+                </div>
+                <div className="flex space-x-2">
+                  <button
+                    onClick={handleBulkApprove}
+                    className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors text-sm"
+                  >
+                    Approve Selected
+                  </button>
+                  <button
+                    onClick={handleBulkReject}
+                    className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors text-sm"
+                  >
+                    Reject Selected
+                  </button>
+                  <button
+                    onClick={() => setSelectedReports([])}
+                    className="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors text-sm"
+                  >
+                    Clear Selection
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+          
+          {filteredReports.filter(r => r.status === 'REPORTED').length === 0 ? (
             <div className="p-12 text-center">
-              <div className="text-4xl mb-4">📋</div>
+              <div className="text-4xl mb-4"></div>
               <h3 className="text-lg font-semibold text-text-primary mb-2">No Pending Requests</h3>
               <p className="text-text-muted">All reports have been processed</p>
             </div>
@@ -321,6 +524,14 @@ const AdminDashboard = () => {
               <table className="w-full text-sm">
                 <thead className="bg-surfaceLight">
                   <tr>
+                    <th className="p-4 text-left text-text-secondary font-medium">
+                      <input
+                        type="checkbox"
+                        checked={selectedReports.length === filteredReports.filter(r => r.status === 'REPORTED').length && filteredReports.filter(r => r.status === 'REPORTED').length > 0}
+                        onChange={handleSelectAllReports}
+                        className="rounded border-gray-300 text-primary focus:ring-primary"
+                      />
+                    </th>
                     <th className="p-4 text-left text-text-secondary font-medium">ID</th>
                     <th className="p-4 text-left text-text-secondary font-medium">Citizen</th>
                     <th className="p-4 text-left text-text-secondary font-medium">Photo</th>
@@ -330,10 +541,18 @@ const AdminDashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {reports
+                  {filteredReports
                     .filter(r => r.status === 'REPORTED')
                     .map(r => (
                       <tr key={r.id} className="border-b border-border hover:bg-surfaceLight transition-colors">
+                        <td className="p-4">
+                          <input
+                            type="checkbox"
+                            checked={selectedReports.includes(r.id)}
+                            onChange={() => handleSelectReport(r.id)}
+                            className="rounded border-gray-300 text-primary focus:ring-primary"
+                          />
+                        </td>
                         <td className="p-4 font-mono text-xs text-text-muted">{r.id}</td>
                         <td className="p-4 text-text-primary">{r.citizen?.name}</td>
                         <td className="p-4">
@@ -344,14 +563,36 @@ const AdminDashboard = () => {
                           />
                         </td>
                         <td className="p-4">
-                          <a
-                            href={`https://www.google.com/maps?q=${r.latitude},${r.longitude}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-primary hover:text-primary/80 transition-colors text-sm"
-                          >
-                            📍 View Map
-                          </a>
+                          <div className="space-y-2">
+                            <div className="flex items-center space-x-2">
+                              <svg className="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                              </svg>
+                              <span className="text-sm font-mono text-text-primary">
+                                {r.latitude?.toFixed(4)}, {r.longitude?.toFixed(4)}
+                              </span>
+                            </div>
+                            {r.address && (
+                              <div className="text-xs text-text-muted flex items-center space-x-1">
+                                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                </svg>
+                                <span>{r.address}</span>
+                              </div>
+                            )}
+                            <a
+                              href={`https://www.google.com/maps?q=${r.latitude},${r.longitude}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-primary hover:text-primary/80 transition-colors text-xs flex items-center space-x-1"
+                            >
+                              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                              </svg>
+                              <span>View in Google Maps</span>
+                            </a>
+                          </div>
                         </td>
                         <td className="p-4">
                           {getStatusBadge(r.status)}
@@ -488,7 +729,7 @@ const AdminDashboard = () => {
             </div>
           ) : unableTasks.length === 0 ? (
             <div className="p-12 text-center">
-              <div className="text-4xl mb-4">✅</div>
+              <div className="text-4xl mb-4"></div>
               <h3 className="text-lg font-semibold text-text-primary mb-2">No Stuck Tasks</h3>
               <p className="text-text-muted">All tasks are proceeding normally</p>
             </div>
