@@ -1,0 +1,26 @@
+sequenceDiagram
+
+participant Citizen
+participant System
+participant AI
+participant Database
+participant Admin
+participant Worker
+
+Citizen->>System: Submit Garbage Report
+System->>AI: Analyze Image
+AI-->>System: Moderation Result
+
+System->>Database: Save Report
+Database-->>System: Confirmation
+
+System->>Admin: Notify New Report
+
+Admin->>System: Approve Report
+System->>Worker: Assign Task
+
+Worker->>System: Accept Task
+Worker->>System: Upload Completion Photo
+
+System->>Database: Update Status
+System->>Citizen: Send Completion Notification

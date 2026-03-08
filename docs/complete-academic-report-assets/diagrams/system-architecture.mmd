@@ -1,0 +1,40 @@
+flowchart TB
+
+subgraph Frontend
+CitizenUI[Citizen Dashboard]
+WorkerUI[Worker Dashboard]
+AdminUI[Admin Dashboard]
+end
+
+subgraph Backend
+API[Express API Server]
+Auth[Authentication Service]
+ReportService[Report Management]
+TaskService[Task Management]
+NotificationService[Notification Service]
+AuditService[Audit Logging]
+end
+
+subgraph DataLayer
+DB[(SQLite Database)]
+Storage[(File Storage)]
+AI[AI Moderation Service]
+end
+
+CitizenUI --> API
+WorkerUI --> API
+AdminUI --> API
+
+API --> Auth
+API --> ReportService
+API --> TaskService
+API --> NotificationService
+API --> AuditService
+
+ReportService --> DB
+TaskService --> DB
+NotificationService --> DB
+AuditService --> DB
+
+ReportService --> Storage
+ReportService --> AI

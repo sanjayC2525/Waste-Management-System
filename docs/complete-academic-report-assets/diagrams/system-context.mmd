@@ -1,0 +1,22 @@
+flowchart TB
+
+Citizen((Citizen))
+Worker((Worker))
+Admin((Administrator))
+
+System[Garbage Collection Management System]
+
+Citizen -->|Submit Reports| System
+Citizen -->|Track Status| System
+Citizen -->|Send Feedback| System
+
+Worker -->|Update Task Status| System
+Worker -->|Upload Proof Photos| System
+
+Admin -->|Review Reports| System
+Admin -->|Assign Workers| System
+Admin -->|View Analytics| System
+
+System -->|Notifications| Citizen
+System -->|Task Assignments| Worker
+System -->|System Logs| Admin

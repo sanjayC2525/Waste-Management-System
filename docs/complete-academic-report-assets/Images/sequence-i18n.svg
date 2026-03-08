@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="900" height="500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .title { font-family: Arial, sans-serif; font-size: 16px; font-weight: bold; fill: #333; }
+      .actor { font-family: Arial, sans-serif; font-size: 12px; font-weight: bold; fill: #333; }
+      .message { font-family: Arial, sans-serif; font-size: 11px; fill: #333; }
+      .lifeline { stroke: #666; stroke-width: 2; fill: none; }
+      .activation { fill: #e3f2fd; stroke: #1976d2; stroke-width: 2; }
+      .box { fill: #f5f5f5; stroke: #666; stroke-width: 2; }
+      .note { fill: #fff3e0; stroke: #f57c00; stroke-width: 2; }
+    </style>
+  </defs>
+
+  <!-- Title -->
+  <text x="450" y="30" text-anchor="middle" class="title">Sequence Diagram: Language Switching and Translation Flow</text>
+
+  <!-- Actors -->
+  <!-- User -->
+  <rect x="50" y="60" width="80" height="40" rx="3" class="box"/>
+  <text x="90" y="85" text-anchor="middle" class="actor">User</text>
+  <line x1="90" y1="100" x2="90" y2="450" class="lifeline"/>
+
+  <!-- Language Selector -->
+  <rect x="200" y="60" width="120" height="40" rx="3" class="box"/>
+  <text x="260" y="85" text-anchor="middle" class="actor">LanguageSelector</text>
+  <line x1="260" y1="100" x2="260" y2="450" class="lifeline"/>
+
+  <!-- i18next -->
+  <rect x="380" y="60" width="100" height="40" rx="3" class="box"/>
+  <text x="430" y="85" text-anchor="middle" class="actor">react-i18next</text>
+  <line x1="430" y1="100" x2="430" y2="450" class="lifeline"/>
+
+  <!-- Translation Files -->
+  <rect x="530" y="60" width="120" height="40" rx="3" class="box"/>
+  <text x="590" y="85" text-anchor="middle" class="actor">Translation Files</text>
+  <line x1="590" y1="100" x2="590" y2="450" class="lifeline"/>
+
+  <!-- Browser Storage -->
+  <rect x="700" y="60" width="100" height="40" rx="3" class="box"/>
+  <text x="750" y="85" text-anchor="middle" class="actor">localStorage</text>
+  <line x1="750" y1="100" x2="750" y2="450" class="lifeline"/>
+
+  <!-- Sequence Flow -->
+  
+  <!-- User selects language -->
+  <line x1="90" y1="140" x2="250" y2="140" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="170" y="135" class="message">selectLanguage('ta')</text>
+  
+  <!-- Language Selector activation -->
+  <rect x="255" y="145" width="10" height="40" class="activation"/>
+  
+  <!-- Language Selector calls i18next -->
+  <line x1="265" y1="160" x2="420" y2="160" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="340" y="155" class="message">changeLanguage('ta')</text>
+  
+  <!-- i18next activation -->
+  <rect x="425" y="165" width="10" height="80" class="activation"/>
+  
+  <!-- i18next loads translation file -->
+  <line x1="435" y1="180" x2="580" y2="180" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="500" y="175" class="message">loadTranslations('ta')</text>
+  
+  <!-- Translation Files activation -->
+  <rect x="585" y="185" width="10" height="20" class="activation"/>
+  
+  <!-- Translation Files return -->
+  <line x1="585" y1="200" x2="445" y2="200" stroke="#666" stroke-width="2" stroke-dasharray="5,5"/>
+  <text x="500" y="195" class="message">ta.json content</text>
+  
+  <!-- i18next updates browser storage -->
+  <line x1="435" y1="220" x2="740" y2="220" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="580" y="215" class="message">storeLanguage('ta')</text>
+  
+  <!-- Browser Storage activation -->
+  <rect x="745" y="225" width="10" height="20" class="activation"/>
+  
+  <!-- Browser Storage confirmation -->
+  <line x1="745" y1="240" x2="445" y2="240" stroke="#666" stroke-width="2" stroke-dasharray="5,5"/>
+  <text x="580" y="235" class="message">cached</text>
+  
+  <!-- i18next triggers re-render -->
+  <line x1="435" y1="260" x2="265" y2="260" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="340" y="255" class="message">languageChanged</text>
+  
+  <!-- Language Selector updates UI -->
+  <rect x="255" y="265" width="10" height="40" class="activation"/>
+  
+  <!-- Language Selector notifies components -->
+  <line x1="265" y1="280" x2="100" y2="280" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="170" y="275" class="message">updateUI()</text>
+  
+  <!-- Note for Tanglish/Kanglish -->
+  <rect x="50" y="340" width="800" height="60" rx="5" class="note"/>
+  <text x="60" y="360" class="actor">Note: Tanglish/Kanglish Innovation</text>
+  <text x="60" y="380" class="message">• ta.json contains: "வேஸ்ட் மேனேஜ்மென்ட் சிஸ்டம்" (Tanglish)</text>
+  <text x="450" y="380" class="message">• kn.json contains: "ವೇಸ್ಟ್ ಮ್ಯಾನೇಜ್ಮೆಂಟ್ ಸಿಸ್ಟಮ್" (Kanglish)</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#666"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .title { font-family: Arial, sans-serif; font-size: 14px; font-weight: bold; fill: #333; }
+      .label { font-family: Arial, sans-serif; font-size: 12px; fill: #555; }
+      .example { font-family: Arial, sans-serif; font-size: 11px; fill: #777; }
+      .tamil-text { font-family: Arial, sans-serif; font-size: 11px; fill: #8b0000; }
+      .kannada-text { font-family: Arial, sans-serif; font-size: 11px; fill: #006400; }
+      .english { fill: #e8f4fd; stroke: #2196f3; stroke-width: 2; }
+      .tanglish { fill: #ffebee; stroke: #f44336; stroke-width: 2; }
+      .kanglish { fill: #e8f5e8; stroke: #4caf50; stroke-width: 2; }
+      .arrow { stroke: #666; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#666"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" class="title">Multi-Language Innovation: Tanglish & Kanglish Implementation</text>
+
+  <!-- English -->
+  <rect x="50" y="80" width="180" height="100" rx="5" class="english"/>
+  <text x="140" y="105" text-anchor="middle" class="label">English</text>
+  <text x="140" y="125" text-anchor="middle" class="example">Waste Management System</text>
+  <text x="140" y="145" text-anchor="middle" class="example">Start Now</text>
+  <text x="140" y="165" text-anchor="middle" class="example">Sign In</text>
+
+  <!-- Tanglish -->
+  <rect x="290" y="80" width="180" height="100" rx="5" class="tanglish"/>
+  <text x="380" y="105" text-anchor="middle" class="label">Tanglish (தமிழ் + English)</text>
+  <text x="380" y="125" text-anchor="middle" class="tamil-text">வேஸ்ட் மேனேஜ்மென்ட் சிஸ்டம்</text>
+  <text x="380" y="145" text-anchor="middle" class="tamil-text">ஸ்டார்ட் பண்ணு</text>
+  <text x="380" y="165" text-anchor="middle" class="tamil-text">சைன் இன்</text>
+
+  <!-- Kanglish -->
+  <rect x="530" y="80" width="180" height="100" rx="5" class="kanglish"/>
+  <text x="620" y="105" text-anchor="middle" class="label">Kanglish (ಕನ್ನಡ + English)</text>
+  <text x="620" y="125" text-anchor="middle" class="kannada-text">ವೇಸ್ಟ್ ಮ್ಯಾನೇಜ್ಮೆಂಟ್ ಸಿಸ್ಟಮ್</text>
+  <text x="620" y="145" text-anchor="middle" class="kannada-text">ಸ್ಟಾರ್ಟ್ ಮಾಡಿ</text>
+  <text x="620" y="165" text-anchor="middle" class="kannada-text">ಸೈನ್ ಇನ್</text>
+
+  <!-- Real Usage Examples -->
+  <rect x="50" y="220" width="660" height="120" rx="5" fill="#f9f9f9" stroke="#ccc"/>
+  <text x="380" y="245" text-anchor="middle" class="label">Real-World Usage Examples</text>
+  
+  <text x="70" y="270" class="example">Traditional Approach:</text>
+  <text x="70" y="290" class="example">• Tamil: குப்பை மேலாண்மை அமைப்பு (Formal - rarely used)</text>
+  <text x="70" y="310" class="example">• Kannada: ತ್ಯಾಜ್ಯ ನಿರ್ವಹಣಾ ವ್ಯವಸ್ಥೆ (Formal - rarely used)</text>
+  
+  <text x="400" y="270" class="example">Our Innovation:</text>
+  <text x="400" y="290" class="tamil-text">• Tanglish: வேஸ்ட் மேனேஜ்மென்ட் சிஸ்டம் (Natural - how people talk)</text>
+  <text x="400" y="310" class="kannada-text">• Kanglish: ವೇಸ್ಟ್ ಮ್ಯಾನೇಜ್ಮೆಂಟ್ ಸಿಸ್ಟಮ್ (Natural - how people talk)</text>
+
+  <!-- Benefits -->
+  <rect x="50" y="360" width="660" height="80" rx="5" fill="#e3f2fd" stroke="#1976d2"/>
+  <text x="380" y="385" text-anchor="middle" class="label">Key Benefits</text>
+  <text x="100" y="410" class="example">• Natural Language Experience</text>
+  <text x="300" y="410" class="example">• Cultural Relevance</text>
+  <text x="480" y="410" class="example">• Improved Accessibility</text>
+  <text x="620" y="410" class="example">• Real-world Usage</text>
+
+  <!-- Arrows showing transformation -->
+  <path d="M 230 130 L 290 130" class="arrow"/>
+  <path d="M 470 130 L 530 130" class="arrow"/>
+</svg>

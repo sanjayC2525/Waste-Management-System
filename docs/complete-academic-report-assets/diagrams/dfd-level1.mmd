@@ -1,0 +1,51 @@
+flowchart TB
+
+Citizen[Citizen]
+Worker[Worker]
+Admin[Administrator]
+
+subgraph Processes
+P1[Report Processing]
+P2[AI Moderation]
+P3[Task Assignment]
+P4[Task Execution]
+P5[Notification System]
+P6[Feedback Management]
+P7[Audit Logging]
+end
+
+subgraph Data
+D1[(Users DB)]
+D2[(Reports DB)]
+D3[(Tasks DB)]
+D4[(Feedback DB)]
+D5[(Notifications DB)]
+D6[(Audit Logs DB)]
+end
+
+Citizen --> P1
+P1 --> P2
+P2 --> D2
+
+Admin --> P3
+P3 --> D3
+
+Worker --> P4
+P4 --> D3
+
+Citizen --> P6
+P6 --> D4
+
+P1 --> P5
+P3 --> P5
+P4 --> P5
+P6 --> P5
+
+P5 --> D5
+
+P1 --> P7
+P3 --> P7
+P4 --> P7
+P6 --> P7
+
+P7 --> D6

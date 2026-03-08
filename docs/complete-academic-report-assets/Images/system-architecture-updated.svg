@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="900" height="700" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .title { font-family: Arial, sans-serif; font-size: 16px; font-weight: bold; fill: #333; }
+      .subtitle { font-family: Arial, sans-serif; font-size: 14px; font-weight: bold; fill: #555; }
+      .label { font-family: Arial, sans-serif; font-size: 12px; fill: #555; }
+      .small-text { font-family: Arial, sans-serif; font-size: 10px; fill: #777; }
+      .tech { font-family: Arial, sans-serif; font-size: 9px; fill: #666; font-style: italic; }
+      .presentation { fill: #e3f2fd; stroke: #1976d2; stroke-width: 2; }
+      .business { fill: #f3e5f5; stroke: #7b1fa2; stroke-width: 2; }
+      .data { fill: #e8f5e8; stroke: #388e3c; stroke-width: 2; }
+      .i18n { fill: #fff3e0; stroke: #f57c00; stroke-width: 2; }
+      .security { fill: #ffebee; stroke: #d32f2f; stroke-width: 2; }
+      .arrow { stroke: #666; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .data-arrow { stroke: #4caf50; stroke-width: 2; fill: none; marker-end: url(#arrowhead-green); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#666"/>
+    </marker>
+    <marker id="arrowhead-green" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#4caf50"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="450" y="30" text-anchor="middle" class="title">Updated System Architecture with Multi-language Support</text>
+
+  <!-- Presentation Layer -->
+  <rect x="50" y="60" width="800" height="120" rx="5" class="presentation"/>
+  <text x="60" y="85" class="subtitle">Presentation Layer (Frontend)</text>
+  
+  <!-- React Components -->
+  <rect x="70" y="100" width="120" height="60" rx="3" fill="#bbdefb" stroke="#1976d2"/>
+  <text x="130" y="125" text-anchor="middle" class="label">React Components</text>
+  <text x="130" y="145" text-anchor="middle" class="tech">React 18.2+</text>
+
+  <!-- Language Selector -->
+  <rect x="210" y="100" width="120" height="60" rx="3" fill="#bbdefb" stroke="#1976d2"/>
+  <text x="270" y="125" text-anchor="middle" class="label">Language Selector</text>
+  <text x="270" y="145" text-anchor="middle" class="tech">Dropdown UI</text>
+
+  <!-- UI Components -->
+  <rect x="350" y="100" width="120" height="60" rx="3" fill="#bbdefb" stroke="#1976d2"/>
+  <text x="410" y="125" text-anchor="middle" class="label">UI Components</text>
+  <text x="410" y="145" text-anchor="middle" class="tech">TailwindCSS</text>
+
+  <!-- Theme System -->
+  <rect x="490" y="100" width="120" height="60" rx="3" fill="#bbdefb" stroke="#1976d2"/>
+  <text x="550" y="125" text-anchor="middle" class="label">Theme System</text>
+  <text x="550" y="145" text-anchor="middle" class="tech">Dark/Light Mode</text>
+
+  <!-- Notification System -->
+  <rect x="630" y="100" width="120" height="60" rx="3" fill="#bbdefb" stroke="#1976d2"/>
+  <text x="690" y="125" text-anchor="middle" class="label">Notifications</text>
+  <text x="690" y="145" text-anchor="middle" class="tech">React Hot Toast</text>
+
+  <!-- i18n Layer -->
+  <rect x="770" y="100" width="70" height="60" rx="3" fill="#ffecb3" stroke="#f57c00"/>
+  <text x="805" y="125" text-anchor="middle" class="label">i18n</text>
+  <text x="805" y="145" text-anchor="middle" class="tech">Layer</text>
+
+  <!-- Internationalization Layer -->
+  <rect x="50" y="200" width="800" height="100" rx="5" class="i18n"/>
+  <text x="60" y="225" class="subtitle">Internationalization Layer (NEW)</text>
+  
+  <!-- react-i18next -->
+  <rect x="70" y="240" width="140" height="40" rx="3" fill="#ffe0b2" stroke="#f57c00"/>
+  <text x="140" y="265" text-anchor="middle" class="label">react-i18next</text>
+
+  <!-- Translation Files -->
+  <rect x="230" y="240" width="100" height="40" rx="3" fill="#ffe0b2" stroke="#f57c00"/>
+  <text x="280" y="265" text-anchor="middle" class="label">en.json</text>
+
+  <rect x="350" y="240" width="100" height="40" rx="3" fill="#ffe0b2" stroke="#f57c00"/>
+  <text x="400" y="265" text-anchor="middle" class="label">kn.json</text>
+
+  <rect x="470" y="240" width="100" height="40" rx="3" fill="#ffe0b2" stroke="#f57c00"/>
+  <text x="520" y="265" text-anchor="middle" class="label">ta.json</text>
+
+  <!-- Language Detection -->
+  <rect x="590" y="240" width="140" height="40" rx="3" fill="#ffe0b2" stroke="#f57c00"/>
+  <text x="660" y="265" text-anchor="middle" class="label">Language Detection</text>
+
+  <!-- Tanglish/Kanglish -->
+  <rect x="750" y="240" width="90" height="40" rx="3" fill="#ffcc80" stroke="#f57c00"/>
+  <text x="795" y="255" text-anchor="middle" class="small-text">Tanglish/</text>
+  <text x="795" y="270" text-anchor="middle" class="small-text">Kanglish</text>
+
+  <!-- Business Logic Layer -->
+  <rect x="50" y="330" width="800" height="120" rx="5" class="business"/>
+  <text x="60" y="355" class="subtitle">Business Logic Layer (Backend)</text>
+  
+  <!-- API Routes -->
+  <rect x="70" y="370" width="120" height="60" rx="3" fill="#e1bee7" stroke="#7b1fa2"/>
+  <text x="130" y="395" text-anchor="middle" class="label">API Routes</text>
+  <text x="130" y="415" text-anchor="middle" class="tech">Express.js</text>
+
+  <!-- Controllers -->
+  <rect x="210" y="370" width="120" height="60" rx="3" fill="#e1bee7" stroke="#7b1fa2"/>
+  <text x="270" y="395" text-anchor="middle" class="label">Controllers</text>
+  <text x="270" y="415" text-anchor="middle" class="tech">Business Logic</text>
+
+  <!-- Services -->
+  <rect x="350" y="370" width="120" height="60" rx="3" fill="#e1bee7" stroke="#7b1fa2"/>
+  <text x="410" y="395" text-anchor="middle" class="label">Services</text>
+  <text x="410" y="415" text-anchor="middle" class="tech">Task Management</text>
+
+  <!-- Middleware -->
+  <rect x="490" y="370" width="120" height="60" rx="3" fill="#e1bee7" stroke="#7b1fa2"/>
+  <text x="550" y="395" text-anchor="middle" class="label">Middleware</text>
+  <text x="550" y="415" text-anchor="middle" class="tech">Auth/CORS</text>
+
+  <!-- AI Content Mod -->
+  <rect x="630" y="370" width="120" height="60" rx="3" fill="#e1bee7" stroke="#7b1fa2"/>
+  <text x="690" y="395" text-anchor="middle" class="label">AI Content Mod</text>
+  <text x="690" y="415" text-anchor="middle" class="tech">Multi-language</text>
+
+  <!-- Data Layer -->
+  <rect x="50" y="480" width="800" height="100" rx="5" class="data"/>
+  <text x="60" y="505" class="subtitle">Data Layer</text>
+  
+  <!-- Database -->
+  <rect x="70" y="520" width="120" height="40" rx="3" fill="#c8e6c9" stroke="#388e3c"/>
+  <text x="130" y="545" text-anchor="middle" class="label">SQLite</text>
+
+  <!-- ORM -->
+  <rect x="210" y="520" width="120" height="40" rx="3" fill="#c8e6c9" stroke="#388e3c"/>
+  <text x="270" y="545" text-anchor="middle" class="label">Prisma ORM</text>
+
+  <!-- Models -->
+  <rect x="350" y="520" width="120" height="40" rx="3" fill="#c8e6c9" stroke="#388e3c"/>
+  <text x="410" y="545" text-anchor="middle" class="label">Data Models</text>
+
+  <!-- File Storage -->
+  <rect x="490" y="520" width="120" height="40" rx="3" fill="#c8e6c9" stroke="#388e3c"/>
+  <text x="550" y="545" text-anchor="middle" class="label">File Storage</text>
+
+  <!-- Cache -->
+  <rect x="630" y="520" width="120" height="40" rx="3" fill="#c8e6c9" stroke="#388e3c"/>
+  <text x="690" y="545" text-anchor="middle" class="label">Cache</text>
+
+  <!-- Security Layer -->
+  <rect x="770" y="330" width="80" height="270" rx="5" class="security"/>
+  <text x="810" y="355" text-anchor="middle" class="subtitle" transform="rotate(-90 810 465)">Security</text>
+  <text x="810" y="400" text-anchor="middle" class="small-text">JWT</text>
+  <text x="810" y="420" text-anchor="middle" class="small-text">bcrypt</text>
+  <text x="810" y="440" text-anchor="middle" class="small-text">CORS</text>
+  <text x="810" y="460" text-anchor="middle" class="small-text">Input Val</text>
+  <text x="810" y="480" text-anchor="middle" class="small-text">Session</text>
+
+  <!-- Arrows -->
+  <!-- Presentation to i18n -->
+  <path d="M 805 160 L 805 200" class="arrow"/>
+  
+  <!-- i18n to Business -->
+  <path d="M 450 300 L 450 330" class="arrow"/>
+  
+  <!-- Business to Data -->
+  <path d="M 450 450 L 450 480" class="data-arrow"/>
+
+  <!-- Legend -->
+  <rect x="50" y="620" width="800" height="60" rx="5" fill="#f9f9f9" stroke="#ccc"/>
+  <text x="60" y="640" class="label">Updated Features:</text>
+  <text x="60" y="660" class="small-text">• Added Internationalization Layer with react-i18next</text>
+  <text x="300" y="660" class="small-text">• Tanglish/Kanglish support</text>
+  <text x="500" y="660" class="small-text">• AI Content Moderation</text>
+  <text x="700" y="660" class="small-text">• Enhanced Security</text>
+</svg>

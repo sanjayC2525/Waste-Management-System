@@ -1,0 +1,30 @@
+erDiagram
+
+USERS ||--o{ GARBAGE_REPORTS : submits
+USERS ||--o{ TASKS : assigned
+USERS ||--o{ NOTIFICATIONS : receives
+USERS ||--o{ AUDIT_LOGS : generates
+
+GARBAGE_REPORTS ||--o{ TASKS : creates
+GARBAGE_REPORTS ||--o{ ISSUES : related_to
+
+USERS {
+int id
+string name
+string email
+string role
+}
+
+TASKS {
+int id
+string status
+datetime scheduledTime
+}
+
+GARBAGE_REPORTS {
+int id
+string imagePath
+float latitude
+float longitude
+string status
+}

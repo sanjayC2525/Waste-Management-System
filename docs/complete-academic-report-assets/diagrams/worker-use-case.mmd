@@ -1,0 +1,19 @@
+flowchart TB
+
+Worker((Worker))
+
+subgraph System
+UC1[View Assigned Tasks]
+UC2[Accept Task]
+UC3[Update Task Status]
+UC4[Upload Proof Photo]
+UC5[Request Reassignment]
+UC6[View Performance Metrics]
+end
+
+Worker --> UC1
+Worker --> UC2
+Worker --> UC3
+Worker --> UC4
+Worker --> UC5
+Worker --> UC6

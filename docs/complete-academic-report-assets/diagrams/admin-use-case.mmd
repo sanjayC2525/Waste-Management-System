@@ -1,0 +1,19 @@
+flowchart TB
+
+Admin((Administrator))
+
+subgraph System
+UC1[Review Garbage Reports]
+UC2[Assign Workers]
+UC3[Manage Users]
+UC4[Handle Feedback & Issues]
+UC5[View Analytics]
+UC6[Access Audit Logs]
+end
+
+Admin --> UC1
+Admin --> UC2
+Admin --> UC3
+Admin --> UC4
+Admin --> UC5
+Admin --> UC6

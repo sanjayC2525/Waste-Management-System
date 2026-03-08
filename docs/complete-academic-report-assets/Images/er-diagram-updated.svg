@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="900" height="600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .title { font-family: Arial, sans-serif; font-size: 16px; font-weight: bold; fill: #333; }
+      .entity-title { font-family: Arial, sans-serif; font-size: 12px; font-weight: bold; fill: #fff; }
+      .attribute { font-family: Arial, sans-serif; font-size: 10px; fill: #333; }
+      .pk { font-weight: bold; fill: #d32f2f; }
+      .fk { font-weight: bold; fill: #1976d2; }
+      .entity { fill: #2196f3; stroke: #1565c0; stroke-width: 2; }
+      .relationship { stroke: #666; stroke-width: 2; fill: none; }
+      .cardinality { font-family: Arial, sans-serif; font-size: 9px; fill: #666; }
+    </style>
+  </defs>
+
+  <!-- Title -->
+  <text x="450" y="30" text-anchor="middle" class="title">Updated Entity-Relationship Diagram</text>
+
+  <!-- Users Entity -->
+  <rect x="50" y="60" width="150" height="180" rx="5" class="entity"/>
+  <text x="125" y="85" text-anchor="middle" class="entity-title">Users</text>
+  <line x1="50" y1="95" x2="200" y2="95" stroke="#1565c0" stroke-width="1"/>
+  <text x="60" y="110" class="attribute pk">PK: id (Integer)</text>
+  <text x="60" y="125" class="attribute">email (String)</text>
+  <text x="60" y="140" class="attribute">password (String)</text>
+  <text x="60" y="155" class="attribute">name (String)</text>
+  <text x="60" y="170" class="attribute">phone (String)</text>
+  <text x="60" y="185" class="attribute">role (Enum)</text>
+  <text x="60" y="200" class="attribute">language (String)</text>
+  <text x="60" y="215" class="attribute">createdAt (DateTime)</text>
+  <text x="60" y="230" class="attribute">updatedAt (DateTime)</text>
+
+  <!-- Reports Entity -->
+  <rect x="250" y="60" width="150" height="200" rx="5" class="entity"/>
+  <text x="325" y="85" text-anchor="middle" class="entity-title">Reports</text>
+  <line x1="250" y1="95" x2="400" y2="95" stroke="#1565c0" stroke-width="1"/>
+  <text x="260" y="110" class="attribute pk">PK: id (Integer)</text>
+  <text x="260" y="125" class="attribute fk">FK: userId (Integer)</text>
+  <text x="260" y="140" class="attribute">location (String)</text>
+  <text x="260" y="155" class="attribute">description (Text)</text>
+  <text x="260" y="170" class="attribute">status (Enum)</text>
+  <text x="260" y="185" class="attribute">priority (Enum)</text>
+  <text x="260" y="200" class="attribute">imageUrl (String)</text>
+  <text x="260" y="215" class="attribute">gpsCoordinates (String)</text>
+  <text x="260" y="230" class="attribute">createdAt (DateTime)</text>
+  <text x="260" y="245" class="attribute">updatedAt (DateTime)</text>
+
+  <!-- Tasks Entity -->
+  <rect x="450" y="60" width="150" height="180" rx="5" class="entity"/>
+  <text x="525" y="85" text-anchor="middle" class="entity-title">Tasks</text>
+  <line x1="450" y1="95" x2="600" y2="95" stroke="#1565c0" stroke-width="1"/>
+  <text x="460" y="110" class="attribute pk">PK: id (Integer)</text>
+  <text x="460" y="125" class="attribute fk">FK: reportId (Integer)</text>
+  <text x="460" y="140" class="attribute fk">FK: workerId (Integer)</text>
+  <text x="460" y="155" class="attribute">status (Enum)</text>
+  <text x="460" y="170" class="attribute">assignedAt (DateTime)</text>
+  <text x="460" y="185" class="attribute">completedAt (DateTime)</text>
+  <text x="460" y="200" class="attribute">notes (Text)</text>
+  <text x="460" y="215" class="attribute">proofImage (String)</text>
+  <text x="460" y="230" class="attribute">createdAt (DateTime)</text>
+
+  <!-- Feedback Entity -->
+  <rect x="650" y="60" width="150" height="160" rx="5" class="entity"/>
+  <text x="725" y="85" text-anchor="middle" class="entity-title">Feedback</text>
+  <line x1="650" y1="95" x2="800" y2="95" stroke="#1565c0" stroke-width="1"/>
+  <text x="660" y="110" class="attribute pk">PK: id (Integer)</text>
+  <text x="660" y="125" class="attribute fk">FK: userId (Integer)</text>
+  <text x="660" y="140" class="attribute">type (Enum)</text>
+  <text x="660" y="155" class="attribute">content (Text)</text>
+  <text x="660" y="170" class="attribute">rating (Integer)</text>
+  <text x="660" y="185" class="attribute">status (Enum)</text>
+  <text x="660" y="200" class="attribute">createdAt (DateTime)</text>
+  <text x="660" y="215" class="attribute">updatedAt (DateTime)</text>
+
+  <!-- Notifications Entity -->
+  <rect x="50" y="300" width="150" height="160" rx="5" class="entity"/>
+  <text x="125" y="325" text-anchor="middle" class="entity-title">Notifications</text>
+  <line x1="50" y1="335" x2="200" y2="335" stroke="#1565c0" stroke-width="1"/>
+  <text x="60" y="350" class="attribute pk">PK: id (Integer)</text>
+  <text x="60" y="365" class="attribute fk">FK: userId (Integer)</text>
+  <text x="60" y="380" class="attribute">title (String)</text>
+  <text x="60" y="395" class="attribute">message (Text)</text>
+  <text x="60" y="410" class="attribute">type (Enum)</text>
+  <text x="60" y="425" class="attribute">isRead (Boolean)</text>
+  <text x="60" y="440" class="attribute">createdAt (DateTime)</text>
+  <text x="60" y="455" class="attribute">updatedAt (DateTime)</text>
+
+  <!-- AuditLogs Entity -->
+  <rect x="250" y="300" width="150" height="160" rx="5" class="entity"/>
+  <text x="325" y="325" text-anchor="middle" class="entity-title">AuditLogs</text>
+  <line x1="250" y1="335" x2="400" y2="335" stroke="#1565c0" stroke-width="1"/>
+  <text x="260" y="350" class="attribute pk">PK: id (Integer)</text>
+  <text x="260" y="365" class="attribute fk">FK: userId (Integer)</text>
+  <text x="260" y="380" class="attribute">action (String)</text>
+  <text x="260" y="395" class="attribute">entity (String)</text>
+  <text x="260" y="410" class="attribute">entityId (Integer)</text>
+  <text x="260" y="425" class="attribute">oldValues (JSON)</text>
+  <text x="260" y="440" class="attribute">newValues (JSON)</text>
+  <text x="260" y="455" class="attribute">createdAt (DateTime)</text>
+
+  <!-- UserSessions Entity -->
+  <rect x="450" y="300" width="150" height="140" rx="5" class="entity"/>
+  <text x="525" y="325" text-anchor="middle" class="entity-title">UserSessions</text>
+  <line x1="450" y1="335" x2="600" y2="335" stroke="#1565c0" stroke-width="1"/>
+  <text x="460" y="350" class="attribute pk">PK: id (Integer)</text>
+  <text x="460" y="365" class="attribute fk">FK: userId (Integer)</text>
+  <text x="460" y="380" class="attribute">token (String)</text>
+  <text x="460" y="395" class="attribute">expiresAt (DateTime)</text>
+  <text x="460" y="410" class="attribute">ipAddress (String)</text>
+  <text x="460" y="425" class="attribute">userAgent (String)</text>
+  <text x="460" y="440" class="attribute">createdAt (DateTime)</text>
+
+  <!-- SystemSettings Entity -->
+  <rect x="650" y="300" width="150" height="140" rx="5" class="entity"/>
+  <text x="725" y="325" text-anchor="middle" class="entity-title">SystemSettings</text>
+  <line x1="650" y1="335" x2="800" y2="335" stroke="#1565c0" stroke-width="1"/>
+  <text x="660" y="350" class="attribute pk">PK: id (Integer)</text>
+  <text x="660" y="365" class="attribute">key (String)</text>
+  <text x="660" y="380" class="attribute">value (Text)</text>
+  <text x="660" y="395" class="attribute">description (Text)</text>
+  <text x="660" y="410" class="attribute">category (String)</text>
+  <text x="660" y="425" class="attribute">isPublic (Boolean)</text>
+  <text x="660" y="440" class="attribute">updatedAt (DateTime)</text>
+
+  <!-- Relationships -->
+  <!-- Users to Reports (1:N) -->
+  <path d="M 200 150 L 250 150" class="relationship"/>
+  <text x="215" y="145" class="cardinality">1</text>
+  <text x="235" y="145" class="cardinality">*</text>
+
+  <!-- Users to Tasks (1:N via Workers) -->
+  <path d="M 200 180 L 450 180" class="relationship"/>
+  <text x="215" y="175" class="cardinality">1</text>
+  <text x="435" y="175" class="cardinality">*</text>
+
+  <!-- Reports to Tasks (1:N) -->
+  <path d="M 400 160 L 450 160" class="relationship"/>
+  <text x="405" y="155" class="cardinality">1</text>
+  <text x="435" y="155" class="cardinality">*</text>
+
+  <!-- Users to Feedback (1:N) -->
+  <path d="M 200 200 L 650 200 L 650 140" class="relationship"/>
+  <text x="215" y="195" class="cardinality">1</text>
+  <text x="635" y="195" class="cardinality">*</text>
+
+  <!-- Users to Notifications (1:N) -->
+  <path d="M 125 240 L 125 300" class="relationship"/>
+  <text x="115" y="255" class="cardinality">1</text>
+  <text x="115" y="295" class="cardinality">*</text>
+
+  <!-- Users to AuditLogs (1:N) -->
+  <path d="M 200 220 L 320 220 L 320 300" class="relationship"/>
+  <text x="215" y="215" class="cardinality">1</text>
+  <text x="305" y="295" class="cardinality">*</text>
+
+  <!-- Users to UserSessions (1:N) -->
+  <path d="M 200 190 L 525 190 L 525 300" class="relationship"/>
+  <text x="215" y="185" class="cardinality">1</text>
+  <text x="510" y="295" class="cardinality">*</text>
+
+  <!-- Legend -->
+  <rect x="50" y="500" width="800" height="80" rx="5" fill="#f9f9f9" stroke="#ccc"/>
+  <text x="60" y="520" class="attribute">Legend:</text>
+  <text x="60" y="540" class="pk">PK = Primary Key</text>
+  <text x="180" y="540" class="fk">FK = Foreign Key</text>
+  <text x="300" y="540" class="attribute">1 = One</text>
+  <text x="380" y="540" class="attribute">* = Many</text>
+  <text x="60" y="560" class="attribute">Updated: Added language field to Users table for i18n preferences</text>
+  <text x="400" y="560" class="attribute">Enhanced: All entities include proper audit trails and timestamps</text>
+</svg>
